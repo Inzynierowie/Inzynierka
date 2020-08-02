@@ -20,7 +20,7 @@ To run this project you need to install locally:
 * postgresql
 * Lombok (plugin IntelliJ)
 
-#PostgreSQL config
+# PostgreSQL config
 
 Before run project, you need to set up the postgreSQL configuration correctly. Create:
 
