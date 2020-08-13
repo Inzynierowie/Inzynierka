@@ -15,6 +15,4 @@ public class Doctor {
     private String surname;
     private String specialist;
     private String possibleMeetingData;
-    private String email;
-    private String password;
 }

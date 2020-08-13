@@ -14,6 +14,4 @@ public class Patient {
     private String name;
     private String surname;
     private boolean insured;
-    private String email;
-    private String password;
 }
