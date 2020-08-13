@@ -42,3 +42,5 @@ In order to run application you need to:
 * Run application:
 
 ###### mvn spring-boot:run
+
+*Restore db from Inzynierka\backend\db
