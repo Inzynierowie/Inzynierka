@@ -8,15 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Data
-@Entity(name = "medicalFacility")
-public class MedicalFacility {
+@Entity(name = "priceList")
+public class Price {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String localization;
-    private long doctorCount;
-    private long patientCount;
-    private long contactNumber;
+    private String treatment;
+    private Long price;
 }
