@@ -20,4 +20,5 @@ public class PatientMedicalData {
     private Long doctorId;
     private LocalDateTime treatmentDate;
     private String medicalProcedure;
+    private String additionalNotes;
 }
