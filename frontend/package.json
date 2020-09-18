@@ -21,13 +21,13 @@
     "bootstrap": "^4.4.1",
     "husky": "^4.2.3",
     "js-cookie": "^2.2.1",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
-    "typescript": "~3.7.2"
+    "react-scripts": "^3.4.3",
+    "typescript": "^3.9.7"
   },
   "scripts": {
     "start": "react-scripts start",
