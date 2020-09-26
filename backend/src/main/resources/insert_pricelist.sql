@@ -1,0 +1,10 @@
+INSERT INTO price_list (id,treatment,price) VALUES (1, 'Breast biopsy', 8679);
+INSERT INTO price_list (id,treatment,price) VALUES (2, 'Coronary artery bypass', 8776);
+INSERT INTO price_list (id,treatment,price) VALUES (3, 'Coronary artery bypass', 949);
+INSERT INTO price_list (id,treatment,price) VALUES (4, 'Carotid endarterectomy', 1426);
+INSERT INTO price_list (id,treatment,price) VALUES (5, 'Cholecystectomy', 2574);
+INSERT INTO price_list (id,treatment,price) VALUES (6, 'Debridement of wound', 7076);
+INSERT INTO price_list (id,treatment,price) VALUES (7, 'Debridement of wound', 9123);
+INSERT INTO price_list (id,treatment,price) VALUES (8, 'Appendectomy', 2904);
+INSERT INTO price_list (id,treatment,price) VALUES (9, 'Appendectomy', 3680);
+INSERT INTO price_list (id,treatment,price) VALUES (10, 'Cholecystectomy', 4042);
