@@ -16,7 +16,7 @@ public class AppointmentController {
     AppointmentService appointmentService;
 
     @PostMapping("/create")
-    public void create(Appointment appointment){
+    public void create(@RequestBody Appointment appointment){
         appointmentService.create(appointment);
     }
 

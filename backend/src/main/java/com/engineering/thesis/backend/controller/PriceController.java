@@ -16,7 +16,7 @@ public class PriceController {
     PriceService priceService;
 
     @PostMapping("/create")
-    public void create(Price price){
+    public void create(@RequestBody Price price){
         priceService.create(price);
     }
 

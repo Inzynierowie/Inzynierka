@@ -16,7 +16,7 @@ public class DoctorController {
     DoctorService doctorService;
 
     @PostMapping("/create")
-    public void create(Doctor doctor){
+    public void create(@RequestBody Doctor doctor){
         doctorService.create(doctor);
     }
 

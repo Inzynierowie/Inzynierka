@@ -16,7 +16,7 @@ public class PatientMedicalDataController {
     PatientMedicalDataService patientMedicalDataService;
 
     @PostMapping("/create")
-    public void create(PatientMedicalData patientMedicalData){
+    public void create(@RequestBody PatientMedicalData patientMedicalData){
         patientMedicalDataService.create(patientMedicalData);
     }
 
