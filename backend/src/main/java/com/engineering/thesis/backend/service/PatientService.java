@@ -1,21 +1,13 @@
 package com.engineering.thesis.backend.service;
 
 import com.engineering.thesis.backend.model.Patient;
-import com.engineering.thesis.backend.repository.ICityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class PatientService implements IPatientService{
-    @Autowired
-    ICityRepository repository;
+public interface PatientService {
+    void create(Patient patient);
+    void deleteById(Long id);
+    List<Patient> selectAll();
+    Patient selectPatientById(Long id);
 
-    @Override
-    public List<Patient> findAll() {
-
-        var patients = (List<Patient>) repository.findAll();
-
-        return patients;
-    }
 }
