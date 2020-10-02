@@ -3,7 +3,6 @@ package com.engineering.thesis.backend.controller;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

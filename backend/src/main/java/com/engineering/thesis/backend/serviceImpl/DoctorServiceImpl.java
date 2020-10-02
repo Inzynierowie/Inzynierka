@@ -1,15 +1,12 @@
 package com.engineering.thesis.backend.serviceImpl;
 
-import com.engineering.thesis.backend.model.Appointment;
 import com.engineering.thesis.backend.model.Doctor;
 import com.engineering.thesis.backend.repository.DoctorRepository;
 import com.engineering.thesis.backend.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
