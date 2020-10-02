@@ -52,15 +52,15 @@ description = ["remove lung","didnt pay in time","psycho"]
 
 if (choice == 1):
     for i in range(iterator):
-        insertOperatorion = "INSERT INTO patients (id,name,surname,insured) VALUES (" + str(index) \
-             + ", '"+random.choice(names) + "', '"+random.choice(surnames) + "', " + random.choice(['TRUE', 'FALSE']) +");"
+        insertOperatorion = "INSERT INTO patients (name,surname,insured) VALUES (" +  \
+             + " '"+random.choice(names) + "', '"+random.choice(surnames) + "', " + random.choice(['TRUE', 'FALSE']) +");"
         tablefile.write(insertOperatorion)
         tablefile.write("\n")
         index += 1
 
 elif (choice == 2):
     for i in range(iterator):
-        insertOperatorion = "INSERT INTO doctors (id,name,surname,specialist) VALUES (" + str(index) \
+        insertOperatorion = "INSERT INTO doctors (name,surname,specialist) VALUES (" +  \
              + ", '"+random.choice(names) + "', '"+random.choice(surnames) + "',' " +random.choice(specializations) +"');"
         tablefile.write(insertOperatorion)
         tablefile.write("\n")
@@ -70,7 +70,7 @@ elif (choice == 3):
     docmax = int(input("How Many doctors: "))
     for i in range(iterator):
         date = randomDateGen()
-        insertOperatorion = "INSERT INTO appointments (id, appointment_date, cost,patient_id, doctor_id) VALUES (" + str(index) \
+        insertOperatorion = "INSERT INTO appointments (appointment_date, cost,patient_id, doctor_id) VALUES (" +  \
             + ",'" + date + "'," +str(random.randint(100, 9999)) + "," + str(random.randint(1, patientsmax)) + "," + str(random.randint(1, docmax)) + ");"
         tablefile.write(insertOperatorion)
         tablefile.write("\n")
@@ -80,7 +80,7 @@ elif (choice == 4):
     docmax = int(input("How Many doctors: "))
     for i in range(iterator):
         date = randomDateGen()
-        insertOperatorion = "INSERT INTO Patients_med_data (id, patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (" + str(index) \
+        insertOperatorion = "INSERT INTO Patients_med_data (patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (" +  \
             + "," + str(random.randint(1, patientsmax)) + "," + str(random.randint(1, docmax)) + ",'" + date + "','" +random.choice(medicalProcedures)+ "','" +random.choice(description) + "');"
         tablefile.write(insertOperatorion)
         tablefile.write("\n")
@@ -90,14 +90,14 @@ elif (choice == 5):
     docmax = int(input("How Many doctors: "))
     for i in range(iterator):
         phonenumber = random_with_N_digits(9)
-        insertOperatorion = "INSERT INTO medical_facility (id,name,localization,doctor_count,patient_count,contact_number) VALUES (" + str(index) \
+        insertOperatorion = "INSERT INTO medical_facility (name,localization,doctor_count,patient_count,contact_number) VALUES (" +  \
              + ", '"+random.choice(medicalFacilityName) + "', '"+random.choice(localizations) + "', " +str(random.randint(1, docmax))+ ", " +str(random.randint(1, patientsmax))+ ", " +str(phonenumber) +");"
         tablefile.write(insertOperatorion)
         tablefile.write("\n")
         index += 1
 elif (choice == 6):
     for i in range(iterator):
-        insertOperatorion = "INSERT INTO price_list (id,treatment,price) VALUES (" + str(index) \
+        insertOperatorion = "INSERT INTO price_list (treatment,price) VALUES (" +  \
              + ", '"+random.choice(medicalProcedures) + "', "+str(random.randint(100, 9999)) +");"
         tablefile.write(insertOperatorion)
         tablefile.write("\n")

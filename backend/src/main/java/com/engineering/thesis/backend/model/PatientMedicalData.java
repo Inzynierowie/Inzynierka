@@ -11,14 +11,18 @@ public class PatientMedicalData {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_patient"))
     private Patient patient;
 
-    private Long doctorId;
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_doctor"))
+    private Doctor doctor;
     private LocalDateTime treatmentDate;
     private String medicalProcedure;
     private String additionalNotes;
+
 }

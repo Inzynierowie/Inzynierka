@@ -11,6 +11,7 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
     @OneToOne
@@ -23,4 +24,5 @@ public class Appointment {
 
     private long cost;
     private LocalDateTime appointmentDate;
+
 }
