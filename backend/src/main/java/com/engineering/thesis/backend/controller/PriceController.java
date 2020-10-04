@@ -21,8 +21,7 @@ public class PriceController {
 
     @GetMapping("/select/{id}")
     public Price selectPriceById(@PathVariable Long id) {
-        Price price = priceService.selectPriceById(id);
-        return price;
+        return priceService.selectPriceById(id);
     }
 
     @GetMapping("/select")

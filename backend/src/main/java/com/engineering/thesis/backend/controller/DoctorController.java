@@ -21,8 +21,7 @@ public class DoctorController {
 
     @GetMapping("/select/{id}")
     public Doctor selectDoctorById(@PathVariable Long id) {
-        Doctor doctor = doctorService.selectDoctorById(id);
-        return doctor;
+        return doctorService.selectDoctorById(id);
     }
 
     @GetMapping("/select")

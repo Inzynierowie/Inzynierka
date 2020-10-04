@@ -20,8 +20,7 @@ public class PatientController {
 
     @GetMapping("/patient/select/{id}")
     public Patient selectPatientById(@PathVariable Long id) {
-        Patient patient = patientService.selectPatientById(id);
-        return patient;
+        return patientService.selectPatientById(id);
     }
 
     @GetMapping("/patient/select")

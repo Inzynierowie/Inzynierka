@@ -21,8 +21,7 @@ public class PatientMedicalDataController {
 
     @GetMapping("/select/{id}")
     public PatientMedicalData selectPatientMedicalDataById(@PathVariable Long id) {
-        PatientMedicalData patientMedicalData = patientMedicalDataService.selectPatientMedicalDataById(id);
-        return patientMedicalData;
+        return patientMedicalDataService.selectPatientMedicalDataById(id);
     }
 
     @GetMapping("/select")

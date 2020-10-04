@@ -1,0 +1,68 @@
+{
+     "names" : [
+        "Liam",
+        "Emma",
+        "Noah",
+        "Olivia",
+        "William",
+        "Ava",
+        "James",
+        "Isabella",
+        "Oliver",
+        "Sophia",
+        "Benjamin",
+        "Charlotte",
+        "Elijah",
+        "Mia",
+        "Lucas",
+        "Amelia",
+        "Mason",
+        "Harper",
+        "Logan",
+        "Evelyn"
+        ],
+     "surnames" : [
+         "Smith",
+         "Johnson",
+         "Williams",
+         "Brown",
+         "White",
+         "Jackson",
+         "Thomson",
+         "Robinson",
+         "Grimes"
+        ],
+     "specializations" : [
+         "Plastic surgery",
+         "Orthopedics",
+         "Cardiology",
+         "Radiology",
+         "Dermatology"
+    ],
+     "medicalProcedures" : [
+        "Appendectomy",
+        "Breast biopsy",
+        "Carotid endarterectomy",
+        "Cataract surgery",
+        "Cesarean section",
+        "Cholecystectomy",
+        "Coronary artery bypass",
+        "Debridement of wound"
+        ],
+     "medicalFacilityName" : [
+         "Hospital","Clinic"
+    ],
+     "localizations" : [
+         "Berlin",
+         "London",
+         "France",
+         "Warsaw",
+         "New York",
+         "Rio"
+        ],
+     "description" : [
+         "remove lung",
+         "didnt pay in time",
+         "psycho"
+        ]  
+}

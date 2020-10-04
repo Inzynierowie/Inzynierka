@@ -21,8 +21,7 @@ public class AppointmentController {
 
     @GetMapping("/select/{id}")
     public Appointment selectAppointmentById(@PathVariable Long id) {
-        Appointment appointment = appointmentService.selectAppointmentById(id);
-        return appointment;
+        return appointmentService.selectAppointmentById(id);
     }
 
     @GetMapping("/select")
