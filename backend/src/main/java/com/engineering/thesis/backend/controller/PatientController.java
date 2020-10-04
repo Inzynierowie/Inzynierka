@@ -8,27 +8,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("patient")
 public class PatientController {
 
     @Autowired
     private PatientService patientService;
 
-    @PostMapping("/patient/create")
+    @PostMapping("/create")
     public void create(@RequestBody Patient patient){
         patientService.create(patient);
     }
 
-    @GetMapping("/patient/select/{id}")
+    @GetMapping("/select/{id}")
     public Patient selectPatientById(@PathVariable Long id) {
         return patientService.selectPatientById(id);
     }
 
-    @GetMapping("/patient/select")
+    @GetMapping("/select")
     public List<Patient> selectAll(){
         return patientService.selectAll();
     }
 
-    @DeleteMapping("/patient/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable Long id) {
         patientService.deleteById(id);
     }
