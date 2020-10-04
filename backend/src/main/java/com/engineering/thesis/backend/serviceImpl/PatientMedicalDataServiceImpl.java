@@ -12,7 +12,7 @@ import java.util.List;
 public class PatientMedicalDataServiceImpl implements PatientMedicalDataService {
 
     @Autowired
-    PatientMedicalDataRepository patientMedicalDataRepository;
+    private PatientMedicalDataRepository patientMedicalDataRepository;
 
     @Override
     public void create(PatientMedicalData patientMedicalData) {
@@ -31,7 +31,6 @@ public class PatientMedicalDataServiceImpl implements PatientMedicalDataService 
 
     @Override
     public PatientMedicalData selectPatientMedicalDataById(Long id) {
-        PatientMedicalData patientMedicalData = patientMedicalDataRepository.findById(id).get();
-        return patientMedicalData;
+        return patientMedicalDataRepository.findById(id).get();
     }
 }

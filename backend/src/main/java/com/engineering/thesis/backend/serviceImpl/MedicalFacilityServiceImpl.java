@@ -12,7 +12,7 @@ import java.util.List;
 public class MedicalFacilityServiceImpl implements MedicalFacilityService {
 
     @Autowired
-    MedicalFacilityRepository medicalFacilityRepository;
+    private MedicalFacilityRepository medicalFacilityRepository;
 
     @Override
     public void create(MedicalFacility medicalFacility) {
@@ -31,7 +31,6 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService {
 
     @Override
     public MedicalFacility selectMedicalFacilityById(Long id) {
-        MedicalFacility medicalFacility = medicalFacilityRepository.findById(id).get();
-        return medicalFacility;
+        return medicalFacilityRepository.findById(id).get();
     }
 }

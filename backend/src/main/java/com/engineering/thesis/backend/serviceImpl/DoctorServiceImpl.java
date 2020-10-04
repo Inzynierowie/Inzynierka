@@ -12,7 +12,7 @@ import java.util.List;
 public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
-    DoctorRepository doctorRepository;
+    private DoctorRepository doctorRepository;
 
     @Override
     public void create(Doctor doctor) {
@@ -31,8 +31,6 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public Doctor selectDoctorById(Long id) {
-        Doctor doctor = doctorRepository.findById(id).get();
-
-        return doctor;
+        return doctorRepository.findById(id).get();
     }
 }

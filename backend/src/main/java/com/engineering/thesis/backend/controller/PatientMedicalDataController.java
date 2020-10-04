@@ -12,7 +12,7 @@ import java.util.List;
 public class PatientMedicalDataController {
 
     @Autowired
-    PatientMedicalDataService patientMedicalDataService;
+    private PatientMedicalDataService patientMedicalDataService;
 
     @PostMapping("/create")
     public void create(@RequestBody PatientMedicalData patientMedicalData){

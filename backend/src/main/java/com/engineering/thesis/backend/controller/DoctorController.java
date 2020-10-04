@@ -12,7 +12,7 @@ import java.util.List;
 public class DoctorController {
 
     @Autowired
-    DoctorService doctorService;
+    private DoctorService doctorService;
 
     @PostMapping("/create")
     public void create(@RequestBody Doctor doctor){

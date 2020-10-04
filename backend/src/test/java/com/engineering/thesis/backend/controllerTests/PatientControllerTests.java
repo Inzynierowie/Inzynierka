@@ -11,7 +11,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 })
 
 @SpringBootTest
-public class PatinetControllerTests {
+public class PatientControllerTests {
 
     @Test
     void CreatePatient() throws Exception {

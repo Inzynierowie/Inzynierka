@@ -12,7 +12,7 @@ import java.util.List;
 public class AppointmentController {
 
     @Autowired
-    AppointmentService appointmentService;
+    private AppointmentService appointmentService;
 
     @PostMapping("/create")
     public void create(@RequestBody Appointment appointment){

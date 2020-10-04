@@ -12,7 +12,7 @@ import java.util.List;
 public class PriceController {
 
     @Autowired
-    PriceService priceService;
+    private PriceService priceService;
 
     @PostMapping("/create")
     public void create(@RequestBody Price price){

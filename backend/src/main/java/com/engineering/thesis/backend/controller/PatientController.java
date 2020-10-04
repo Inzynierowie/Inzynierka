@@ -11,7 +11,7 @@ import java.util.List;
 public class PatientController {
 
     @Autowired
-    PatientService patientService;
+    private PatientService patientService;
 
     @PostMapping("/patient/create")
     public void create(@RequestBody Patient patient){

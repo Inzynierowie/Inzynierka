@@ -12,7 +12,7 @@ import java.util.List;
 public class PriceServiceImpl implements PriceService {
 
     @Autowired
-    PriceRepository priceRepository;
+    private PriceRepository priceRepository;
 
     @Override
     public void create(Price price) {
@@ -31,7 +31,6 @@ public class PriceServiceImpl implements PriceService {
 
     @Override
     public Price selectPriceById(Long id) {
-        Price price = priceRepository.findById(id).get();
-        return price;
+        return priceRepository.findById(id).get();
     }
 }
