@@ -1,421 +1,136 @@
---
--- PostgreSQL database dump
---
-
--- Dumped from database version 10.13
--- Dumped by pg_dump version 10.13
-
--- Started on 2020-08-12 19:42:23
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- TOC entry 2859 (class 0 OID 0)
--- Dependencies: 2858
--- Name: DATABASE engineering_thesis; Type: COMMENT; Schema: -; Owner: postgres
---
-
-COMMENT ON DATABASE engineering_thesis IS 'engeneer tables stuff';
-
-
---
--- TOC entry 8 (class 2615 OID 16395)
--- Name: MedKit; Type: SCHEMA; Schema: -; Owner: postgres
---
-
-CREATE SCHEMA "MedKit";
-
-
-ALTER SCHEMA "MedKit" OWNER TO postgres;
-
---
--- TOC entry 1 (class 3079 OID 12924)
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- TOC entry 2861 (class 0 OID 0)
--- Dependencies: 1
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
-SET default_tablespace = '';
-
-SET default_with_oids = false;
-
---
--- TOC entry 199 (class 1259 OID 24610)
--- Name: Appointments; Type: TABLE; Schema: MedKit; Owner: postgres
---
-
-CREATE TABLE "MedKit"."Appointments" (
-    "Appointment_ID" numeric NOT NULL,
-    "Appointment_Date" date,
-    "Appointment_Cost" numeric(7,0),
-    "Doctor_ID" numeric,
-    "Patient_ID" numeric
-);
-
-
-ALTER TABLE "MedKit"."Appointments" OWNER TO postgres;
-
---
--- TOC entry 198 (class 1259 OID 24594)
--- Name: Doctors; Type: TABLE; Schema: MedKit; Owner: postgres
---
-
-CREATE TABLE "MedKit"."Doctors" (
-    "Doctor_ID" numeric NOT NULL,
-    "Doctor_Name" character varying(30),
-    "Doctor_Surname" character varying(30),
-    "Specialization" character varying(60)
-);
-
-
-ALTER TABLE "MedKit"."Doctors" OWNER TO postgres;
-
---
--- TOC entry 201 (class 1259 OID 24660)
--- Name: Medical_Facility; Type: TABLE; Schema: MedKit; Owner: postgres
---
-
-CREATE TABLE "MedKit"."Medical_Facility" (
-    "Facility_ID" numeric NOT NULL,
-    "Name" character varying,
-    "Localization" character varying,
-    "Doctors_Count" numeric,
-    "Patients_Count" numeric,
-    "Contact_Number" character varying
-);
-
-
-ALTER TABLE "MedKit"."Medical_Facility" OWNER TO postgres;
-
---
--- TOC entry 200 (class 1259 OID 24630)
--- Name: Patient_Med_Data; Type: TABLE; Schema: MedKit; Owner: postgres
---
-
-CREATE TABLE "MedKit"."Patient_Med_Data" (
-    "Med_Data_ID" numeric NOT NULL,
-    "Patient_ID" numeric,
-    "Doctor_ID" numeric,
-    "Date" date,
-    "Medical_Procedure" character varying(100)
-);
-
-
-ALTER TABLE "MedKit"."Patient_Med_Data" OWNER TO postgres;
-
---
--- TOC entry 197 (class 1259 OID 24586)
--- Name: Patients; Type: TABLE; Schema: MedKit; Owner: postgres
---
-
-CREATE TABLE "MedKit"."Patients" (
-    "Patient_ID" numeric NOT NULL,
-    "Patient_Name" character varying(30),
-    "Patient_Surname" character varying(30),
-    "Is_Insured" boolean
-);
-
-
-ALTER TABLE "MedKit"."Patients" OWNER TO postgres;
-
---
--- TOC entry 202 (class 1259 OID 24668)
--- Name: Price_List; Type: TABLE; Schema: MedKit; Owner: postgres
---
-
-CREATE TABLE "MedKit"."Price_List" (
-    "ID" numeric NOT NULL,
-    "Name" character varying,
-    "Price" numeric(7,0)
-);
-
-
-ALTER TABLE "MedKit"."Price_List" OWNER TO postgres;
-
---
--- TOC entry 203 (class 1259 OID 24811)
--- Name: hibernate_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.hibernate_sequence
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.hibernate_sequence OWNER TO postgres;
-
---
--- TOC entry 204 (class 1259 OID 24813)
--- Name: patients; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.patients (
-    patiend_id bigint NOT NULL,
-    is_insured boolean NOT NULL,
-    patient_name character varying(255),
-    patient_surname character varying(255)
-);
-
-
-ALTER TABLE public.patients OWNER TO postgres;
-
---
--- TOC entry 2847 (class 0 OID 24610)
--- Dependencies: 199
--- Data for Name: Appointments; Type: TABLE DATA; Schema: MedKit; Owner: postgres
---
-
-COPY "MedKit"."Appointments" ("Appointment_ID", "Appointment_Date", "Appointment_Cost", "Doctor_ID", "Patient_ID") FROM stdin;
-1	2020-08-12	3000	2	1
-\.
-
-
---
--- TOC entry 2846 (class 0 OID 24594)
--- Dependencies: 198
--- Data for Name: Doctors; Type: TABLE DATA; Schema: MedKit; Owner: postgres
---
-
-COPY "MedKit"."Doctors" ("Doctor_ID", "Doctor_Name", "Doctor_Surname", "Specialization") FROM stdin;
-1	Mat	Patterson	Surgeon
-2	Tom	Stanson	Oncologist
-3	Jason	Blyn	Internist
-\.
-
-
---
--- TOC entry 2849 (class 0 OID 24660)
--- Dependencies: 201
--- Data for Name: Medical_Facility; Type: TABLE DATA; Schema: MedKit; Owner: postgres
---
-
-COPY "MedKit"."Medical_Facility" ("Facility_ID", "Name", "Localization", "Doctors_Count", "Patients_Count", "Contact_Number") FROM stdin;
-1	California_Medical_Univeristy	LA some street and postcode	6	8	666-136-109
-\.
-
-
---
--- TOC entry 2848 (class 0 OID 24630)
--- Dependencies: 200
--- Data for Name: Patient_Med_Data; Type: TABLE DATA; Schema: MedKit; Owner: postgres
---
-
-COPY "MedKit"."Patient_Med_Data" ("Med_Data_ID", "Patient_ID", "Doctor_ID", "Date", "Medical_Procedure") FROM stdin;
-1	1	1	2020-05-12	Tumor remove
-\.
-
-
---
--- TOC entry 2845 (class 0 OID 24586)
--- Dependencies: 197
--- Data for Name: Patients; Type: TABLE DATA; Schema: MedKit; Owner: postgres
---
-
-COPY "MedKit"."Patients" ("Patient_ID", "Patient_Name", "Patient_Surname", "Is_Insured") FROM stdin;
-1	Tom	Ne	t
-2	Mat	Jaw	t
-3	Shaun	Trout	t
-4	James	Clemp	t
-5	Scott	Ignon	t
-6	Pat	Rewning	t
-7	Tom	Toms	t
-8	Jacob	Patterson	t
-\.
-
-
---
--- TOC entry 2850 (class 0 OID 24668)
--- Dependencies: 202
--- Data for Name: Price_List; Type: TABLE DATA; Schema: MedKit; Owner: postgres
---
-
-COPY "MedKit"."Price_List" ("ID", "Name", "Price") FROM stdin;
-1	general diagnostics	3000
-2	tumor excision	1000
-3	tissue study	200
-4	teeth removal	1500
-5	diabetes checking	130
-6	transplantation	14600
-7	transfusion	2350
-8	anesthesia before surgery	7000
-\.
-
-
---
--- TOC entry 2852 (class 0 OID 24813)
--- Dependencies: 204
--- Data for Name: patients; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.patients (patiend_id, is_insured, patient_name, patient_surname) FROM stdin;
-\.
-
-
---
--- TOC entry 2862 (class 0 OID 0)
--- Dependencies: 203
--- Name: hibernate_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.hibernate_sequence', 1, false);
-
-
---
--- TOC entry 2707 (class 2606 OID 24617)
--- Name: Appointments Appointments_pkey; Type: CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Appointments"
-    ADD CONSTRAINT "Appointments_pkey" PRIMARY KEY ("Appointment_ID");
-
-
---
--- TOC entry 2705 (class 2606 OID 24601)
--- Name: Doctors Doctors_pkey; Type: CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Doctors"
-    ADD CONSTRAINT "Doctors_pkey" PRIMARY KEY ("Doctor_ID");
-
-
---
--- TOC entry 2715 (class 2606 OID 24667)
--- Name: Medical_Facility Medical_Facility_pkey; Type: CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Medical_Facility"
-    ADD CONSTRAINT "Medical_Facility_pkey" PRIMARY KEY ("Facility_ID");
-
-
---
--- TOC entry 2711 (class 2606 OID 24637)
--- Name: Patient_Med_Data Patient_Med_Data_pkey; Type: CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Patient_Med_Data"
-    ADD CONSTRAINT "Patient_Med_Data_pkey" PRIMARY KEY ("Med_Data_ID");
-
-
---
--- TOC entry 2703 (class 2606 OID 24593)
--- Name: Patients Patients_pkey; Type: CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Patients"
-    ADD CONSTRAINT "Patients_pkey" PRIMARY KEY ("Patient_ID");
-
-
---
--- TOC entry 2717 (class 2606 OID 24675)
--- Name: Price_List Price_List_pkey; Type: CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Price_List"
-    ADD CONSTRAINT "Price_List_pkey" PRIMARY KEY ("ID");
-
-
---
--- TOC entry 2719 (class 2606 OID 24820)
--- Name: patients patients_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.patients
-    ADD CONSTRAINT patients_pkey PRIMARY KEY (patiend_id);
-
-
---
--- TOC entry 2708 (class 1259 OID 24623)
--- Name: fki_Doctor_ID; Type: INDEX; Schema: MedKit; Owner: postgres
---
-
-CREATE INDEX "fki_Doctor_ID" ON "MedKit"."Appointments" USING btree ("Doctor_ID");
-
-
---
--- TOC entry 2712 (class 1259 OID 24659)
--- Name: fki_Doctor_Med_Data_ID; Type: INDEX; Schema: MedKit; Owner: postgres
---
-
-CREATE INDEX "fki_Doctor_Med_Data_ID" ON "MedKit"."Patient_Med_Data" USING btree ("Doctor_ID");
-
-
---
--- TOC entry 2709 (class 1259 OID 24629)
--- Name: fki_Patient_ID; Type: INDEX; Schema: MedKit; Owner: postgres
---
-
-CREATE INDEX "fki_Patient_ID" ON "MedKit"."Appointments" USING btree ("Patient_ID");
-
-
---
--- TOC entry 2713 (class 1259 OID 24648)
--- Name: fki_Patient_Med_Data_ID; Type: INDEX; Schema: MedKit; Owner: postgres
---
-
-CREATE INDEX "fki_Patient_Med_Data_ID" ON "MedKit"."Patient_Med_Data" USING btree ("Patient_ID");
-
-
---
--- TOC entry 2720 (class 2606 OID 24618)
--- Name: Appointments Doctor_ID; Type: FK CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Appointments"
-    ADD CONSTRAINT "Doctor_ID" FOREIGN KEY ("Doctor_ID") REFERENCES "MedKit"."Doctors"("Doctor_ID") NOT VALID;
-
-
---
--- TOC entry 2722 (class 2606 OID 24654)
--- Name: Patient_Med_Data Doctor_Med_Data_ID; Type: FK CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Patient_Med_Data"
-    ADD CONSTRAINT "Doctor_Med_Data_ID" FOREIGN KEY ("Doctor_ID") REFERENCES "MedKit"."Doctors"("Doctor_ID") NOT VALID;
-
-
---
--- TOC entry 2721 (class 2606 OID 24624)
--- Name: Appointments Patient_ID; Type: FK CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Appointments"
-    ADD CONSTRAINT "Patient_ID" FOREIGN KEY ("Patient_ID") REFERENCES "MedKit"."Patients"("Patient_ID") NOT VALID;
-
-
---
--- TOC entry 2723 (class 2606 OID 24638)
--- Name: Patient_Med_Data Patient_Med_Data_ID; Type: FK CONSTRAINT; Schema: MedKit; Owner: postgres
---
-
-ALTER TABLE ONLY "MedKit"."Patient_Med_Data"
-    ADD CONSTRAINT "Patient_Med_Data_ID" FOREIGN KEY ("Patient_ID") REFERENCES "MedKit"."Patients"("Patient_ID") NOT VALID;
-
-
--- Completed on 2020-08-12 19:42:23
-
---
--- PostgreSQL database dump complete
---
+INSERT INTO price_list (treatment,price) VALUES ('Breast biopsy', 8679);
+INSERT INTO price_list (treatment,price) VALUES ('Coronary artery bypass', 8776);
+INSERT INTO price_list (treatment,price) VALUES ('Coronary artery bypass', 949);
+INSERT INTO price_list (treatment,price) VALUES ('Carotid endarterectomy', 1426);
+INSERT INTO price_list (treatment,price) VALUES ('Cholecystectomy', 2574);
+INSERT INTO price_list (treatment,price) VALUES ('Debridement of wound', 7076);
+INSERT INTO price_list (treatment,price) VALUES ('Debridement of wound', 9123);
+INSERT INTO price_list (treatment,price) VALUES ('Appendectomy', 2904);
+INSERT INTO price_list (treatment,price) VALUES ('Appendectomy', 3680);
+INSERT INTO price_list (treatment,price) VALUES ('Cholecystectomy', 4042);
+INSERT INTO patients (name,surname,insured) VALUES ('Logan', 'Jackson', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('James', 'Smith', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Olivia', 'Thomson', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Lucas', 'Jackson', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Isabella', 'White', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Mia', 'Johnson', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Ava', 'Brown', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Sophia', 'Brown', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Charlotte', 'Jackson', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Oliver', 'Brown', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Mia', 'White', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Logan', 'Brown', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Harper', 'Smith', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Mia', 'Grimes', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Evelyn', 'Robinson', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('William', 'White', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Noah', 'Williams', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Mia', 'Robinson', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Mia', 'Thomson', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Sophia', 'Brown', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Olivia', 'Williams', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Lucas', 'Jackson', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Lucas', 'Johnson', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Liam', 'Thomson', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Harper', 'Grimes', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Emma', 'Robinson', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('James', 'White', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Evelyn', 'Smith', TRUE);
+INSERT INTO patients (name,surname,insured) VALUES ('Elijah', 'Johnson', FALSE);
+INSERT INTO patients (name,surname,insured) VALUES ('Amelia', 'Thomson', TRUE);
+INSERT INTO doctors (name,surname,specialist) VALUES ('Liam', 'Grimes',' Plastic surgery');
+INSERT INTO doctors (name,surname,specialist) VALUES ('William', 'Grimes',' Radiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Oliver', 'Jackson',' Dermatology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('James', 'White',' Orthopedics');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Noah', 'Smith',' Radiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Harper', 'Brown',' Cardiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Mason', 'Robinson',' Dermatology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Evelyn', 'Williams',' Cardiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Charlotte', 'Thomson',' Radiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Mason', 'Thomson',' Radiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Charlotte', 'Johnson',' Cardiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Mason', 'Grimes',' Dermatology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Lucas', 'Smith',' Plastic surgery');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Emma', 'Smith',' Radiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('James', 'Robinson',' Plastic surgery');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Mason', 'Smith',' Orthopedics');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Isabella', 'Jackson',' Orthopedics');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Elijah', 'White',' Dermatology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('William', 'Thomson',' Orthopedics');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Olivia', 'White',' Cardiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Noah', 'Robinson',' Plastic surgery');
+INSERT INTO doctors (name,surname,specialist) VALUES ('William', 'White',' Cardiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Olivia', 'Jackson',' Cardiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Charlotte', 'Johnson',' Orthopedics');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Emma', 'White',' Plastic surgery');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Ava', 'Thomson',' Dermatology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Benjamin', 'Johnson',' Plastic surgery');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Sophia', 'Johnson',' Radiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Emma', 'Johnson',' Cardiology');
+INSERT INTO doctors (name,surname,specialist) VALUES ('Mason', 'Grimes',' Orthopedics');
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2007-03-15',2481,27,12);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2009-11-12',6366,25,25);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2006-09-18',7014,13,1);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2011-06-27',670,24,15);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2009-02-25',1285,27,29);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2001-11-23',2529,22,9);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2010-09-18',3889,26,19);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2013-02-07',4317,2,8);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2010-12-21',1185,28,16);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2009-06-16',2419,23,23);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2004-01-25',447,8,6);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2012-11-19',7011,4,23);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2011-05-01',4690,22,19);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2002-03-28',2723,22,10);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2003-08-14',2864,18,4);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2005-09-09',3479,25,16);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2006-12-16',4423,11,21);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2004-06-13',2396,15,7);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2000-09-24',2850,27,26);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2003-03-29',3348,20,22);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2003-12-27',8229,17,26);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2005-05-28',2532,25,21);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2009-04-08',7898,30,8);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2007-04-20',8459,24,18);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2003-09-30',9655,2,5);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2003-04-11',3470,15,8);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2005-05-23',9049,17,17);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2001-12-21',4197,26,10);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2001-10-31',3287,30,14);
+INSERT INTO appointments ( appointment_date, cost,patient_id, doctor_id) VALUES ('2010-11-22',7461,23,27);
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (15,16,'2000-12-26','Cataract surgery','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (30,16,'2004-12-19','Cesarean section','remove lung');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (1,26,'2004-09-16','Carotid endarterectomy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (1,9,'2003-10-11','Breast biopsy','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (13,11,'2012-11-05','Cholecystectomy','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (15,24,'2007-11-02','Cataract surgery','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (18,27,'2002-04-30','Breast biopsy','remove lung');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (21,5,'2007-11-11','Cesarean section','remove lung');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (5,22,'2001-04-09','Cesarean section','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (24,1,'2000-08-08','Appendectomy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (20,29,'2004-01-01','Cataract surgery','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (27,27,'2003-02-18','Breast biopsy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (7,30,'2007-08-03','Appendectomy','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (27,22,'2013-01-18','Cataract surgery','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (1,24,'2013-01-29','Breast biopsy','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (16,9,'2005-01-24','Cesarean section','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (5,16,'2001-01-07','Breast biopsy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (11,8,'2003-08-31','Carotid endarterectomy','remove lung');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (21,8,'2009-07-15','Appendectomy','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (26,9,'2009-03-26','Appendectomy','remove lung');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (5,10,'2006-06-30','Cholecystectomy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (12,21,'2012-01-13','Coronary artery bypass','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (27,2,'2013-04-10','Debridement of wound','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (14,1,'2010-10-08','Appendectomy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (9,13,'2008-03-31','Coronary artery bypass','remove lung');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (30,30,'2010-04-18','Coronary artery bypass','psycho');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (21,17,'2001-07-04','Breast biopsy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (25,19,'2005-10-08','Cataract surgery','remove lung');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (3,25,'2007-03-31','Cholecystectomy','didnt pay in time');
+INSERT INTO Patients_med_data ( patient_id, doctor_id, treatment_date,additional_notes, medical_procedure) VALUES (28,3,'2010-10-03','Cesarean section','psycho');
+INSERT INTO medical_facility (name,localization,doctor_count,patient_count,contact_number) VALUES ('Hospital', 'New York', 3, 4, 627329649);
+INSERT INTO medical_facility (name,localization,doctor_count,patient_count,contact_number) VALUES ('Hospital', 'Warsaw', 2, 8, 983889932);
+INSERT INTO medical_facility (name,localization,doctor_count,patient_count,contact_number) VALUES ('Clinic', 'New York', 19, 5, 121989038);
+INSERT INTO medical_facility (name,localization,doctor_count,patient_count,contact_number) VALUES ('Hospital', 'Berlin', 22, 16, 836211797);
+INSERT INTO medical_facility (name,localization,doctor_count,patient_count,contact_number) VALUES ('Clinic', 'New York', 13, 13, 791691524);
 
