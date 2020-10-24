@@ -14,9 +14,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private AppointmentRepository appointmentRepository;
 
-
     @Override
-    public void create(Appointment appointment){
+    public void create(Appointment appointment) {
         appointmentRepository.save(appointment);
     }
 
@@ -26,12 +25,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<Appointment> selectAll(){
+    public List<Appointment> selectAll() {
         return appointmentRepository.findAll();
     }
 
     @Override
-    public Appointment selectAppointmentById(Long id){
+    public Appointment selectAppointmentById(Long id) {
         return appointmentRepository.findById(id).get();
     }
 }

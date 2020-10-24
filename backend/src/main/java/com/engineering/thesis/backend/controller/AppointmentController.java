@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("appointment")
+@RequestMapping("api/appointment")
 public class AppointmentController {
 
     @Autowired
     private AppointmentService appointmentService;
 
     @PostMapping("/create")
-    public void create(@RequestBody Appointment appointment){
+    public void create(@RequestBody Appointment appointment) {
         appointmentService.create(appointment);
     }
 
@@ -25,7 +25,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/select")
-    public List<Appointment> selectAll(){
+    public List<Appointment> selectAll() {
         return appointmentService.selectAll();
     }
 
