@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("price")
+@RequestMapping("api/price")
 public class PriceController {
 
     @Autowired
     private PriceService priceService;
 
     @PostMapping("/create")
-    public void create(@RequestBody Price price){
+    public void create(@RequestBody Price price) {
         priceService.create(price);
     }
 
@@ -25,7 +25,7 @@ public class PriceController {
     }
 
     @GetMapping("/select")
-    public List<Price> selectAll(){
+    public List<Price> selectAll() {
         return priceService.selectAll();
     }
 
