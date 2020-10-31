@@ -1,42 +1,45 @@
 package com.engineering.thesis.backend;
 
-import com.engineering.thesis.backend.model.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.rmi.ServerException;
+import java.util.Collections;
+import java.util.Set;
 
-public class JwtFilter implements Filter {
+public class JwtFilter extends BasicAuthenticationFilter {
 
-//    @Autowired
-//    private User user;
+    public JwtFilter(AuthenticationManager authenticationManager) {
+        super(authenticationManager);
+    }
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        String header = request.getHeader("Authorization");
+        UsernamePasswordAuthenticationToken authResult = getAuthenticationByToken(header);
+        SecurityContextHolder.getContext().setAuthentication(authResult);
+        chain.doFilter(request, response);
+    }
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+    private UsernamePasswordAuthenticationToken getAuthenticationByToken(String header) {
+        Jws<Claims> claimsJws = Jwts.parser()
+                .setSigningKey("x8K9)cM*udm$k%!".getBytes())
+                .parseClaimsJws(header.replace("Bearer ", ""));
 
-        String header = httpServletRequest.getHeader("authorization");
-        if(httpServletRequest == null || !header.startsWith("Bearer ")){
-            throw new ServerException("Wrong or empty header");
-        } else {
-            try {
-                String token = header.substring(7);
-//                Claims claims = Jwts.parser().setSigningKey(user.getPassword()).parseClaimsJws(token).getBody();
-                Claims claims = Jwts.parser().setSigningKey("Admin123Start").parseClaimsJws(token).getBody();
-                servletRequest.setAttribute("claims", claims);
-            } catch (Exception e){
-                throw new ServerException("Wrong key");
-            }
-        }
-        filterChain.doFilter(servletRequest, servletResponse);
+        String username = claimsJws.getBody().get("email").toString();
+        String password = claimsJws.getBody().get("password").toString();
+        String role = claimsJws.getBody().get("role").toString();
+        Set<SimpleGrantedAuthority> simpleGrantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(role));
+
+        return new UsernamePasswordAuthenticationToken(username, password, simpleGrantedAuthorities);
     }
 }
