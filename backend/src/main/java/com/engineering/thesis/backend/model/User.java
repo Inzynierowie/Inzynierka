@@ -1,6 +1,8 @@
 package com.engineering.thesis.backend.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,8 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "users")
 public class User implements UserDetails {
 
@@ -20,6 +25,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String role;
+    private boolean isActive;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -28,7 +34,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override
@@ -48,6 +54,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isActive;
     }
 }
