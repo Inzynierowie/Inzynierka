@@ -3,6 +3,8 @@ package com.engineering.thesis.backend.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,7 +23,10 @@ public class PatientMedicalData {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_doctor"))
     private Doctor doctor;
 
+    @NotNull
     private LocalDateTime treatmentDate;
+    @NotEmpty
     private String medicalProcedure;
+    @NotEmpty
     private String additionalNotes;
 }
