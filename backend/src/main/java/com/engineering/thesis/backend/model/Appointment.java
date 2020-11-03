@@ -1,8 +1,13 @@
 package com.engineering.thesis.backend.model;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Data
@@ -21,8 +26,10 @@ public class Appointment {
     @OneToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_doctor"))
     private Doctor doctor;
-
+    @NotNull
+    @Range(min = 0)
     private long cost;
+    @NotNull
     private LocalDateTime appointmentDate;
 
 }
