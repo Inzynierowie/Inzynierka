@@ -1,23 +1,26 @@
 package com.engineering.thesis.backend.serviceImpl;
 
+import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
+@RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public UserDetailsServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email) ;
+        Optional<User> user = userRepository.findByEmail(email);
+
+        user.orElseThrow(() -> new UsernameNotFoundException(email + " not found."));
+        return user.get();
     }
 }
