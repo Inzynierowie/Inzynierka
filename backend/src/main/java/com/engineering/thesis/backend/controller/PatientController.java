@@ -14,11 +14,6 @@ public class PatientController {
     @Autowired
     private PatientService patientService;
 
-    @PostMapping("/create")
-    public void create(@RequestBody Patient patient) {
-        patientService.create(patient);
-    }
-
     @GetMapping("/select/{id}")
     public Patient selectPatientById(@PathVariable Long id) {
         return patientService.selectPatientById(id);
@@ -27,10 +22,5 @@ public class PatientController {
     @GetMapping("/select")
     public List<Patient> selectAll() {
         return patientService.selectAll();
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteById(@PathVariable Long id) {
-        patientService.deleteById(id);
     }
 }
