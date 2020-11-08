@@ -1,19 +1,21 @@
 package com.engineering.thesis.backend.model;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
 @Data
-@EqualsAndHashCode(callSuper = true)
 @Entity(name = "patients")
-public class Patient extends User {
+public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_user") )
+    private User user;
 
     @Column(name = "insured")
     private boolean isInsured;
