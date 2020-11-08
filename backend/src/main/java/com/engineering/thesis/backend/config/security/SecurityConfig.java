@@ -2,7 +2,7 @@ package com.engineering.thesis.backend.config.security;
 
 import com.engineering.thesis.backend.config.jwt.AuthEntryPointJwt;
 import com.engineering.thesis.backend.config.jwt.JwtRequestFilter;
-import com.engineering.thesis.backend.serviceImpl.UserDetailsServiceImpl;
+import com.engineering.thesis.backend.serviceImpl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private  final UserDetailsServiceImpl userDetailsService;
+    private  final UserServiceImpl userDetailsService;
 
     private final AuthEntryPointJwt unauthorizedHandler;
 

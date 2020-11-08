@@ -4,7 +4,7 @@ import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,21 +22,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        long currentTimeMillis = System.currentTimeMillis();
-        return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("roles", "user")
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(new Date(currentTimeMillis + 3600000))
-                .signWith(SignatureAlgorithm.HS512, user.getPassword())
-                .compact();
+    public ResponseEntity<?> login(@RequestBody User user) {
+        return userService.login(user);
     }
 
     @PostMapping("/register")
-    public String register(User user)
+    public ResponseEntity<?> register(@RequestBody User user)
     {
-        userService.addUser(user);
-        return "register";
+        return userService.register(user);
     }
 }
