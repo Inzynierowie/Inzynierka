@@ -14,7 +14,6 @@ import java.util.Collections;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
 @Entity(name = "users")
 public class User implements UserDetails {
 
