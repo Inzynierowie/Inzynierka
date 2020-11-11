@@ -27,6 +27,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private String role;
+
+    @Column(name = "is_active")
     private boolean isActive;
 
     @Override
