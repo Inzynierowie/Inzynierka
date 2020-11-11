@@ -1,5 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import { Redirect } from "react-router-dom";
+import { useAppointmentGetter } from "../../API/Doctors";
 
 interface LoginProps {
   setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,6 +10,16 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ setIsLoggedIn, isLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  /**
+   * TODO: Clear out this call and console log after developement
+   * This is how I am planning to hook up the data in applicaion
+   * thanks to hooks we can react to each API request change and
+   * if any of the data loads we can also react to specific hook loading said data.
+   */
+  const [data, loading, error, refetch] = useAppointmentGetter(1);
+  console.log({ data, loading, error });
+  // EOL for request preview
 
   const validateLogin = (e: FormEvent) => {
     e.preventDefault();

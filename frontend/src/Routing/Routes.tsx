@@ -1,16 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import { Home, Login, Doctors, Visits } from "../pages";
-
-const NotFound: React.FC = () => {
-  return (
-    <>
-      <h1>404</h1>
-      <h2>Not Found!</h2>
-    </>
-  );
-};
+import { Home, Login, Doctors, Visits, NotFound } from "../pages";
 
 const Routes: React.FC = () => {
   // This state should come from cookies
