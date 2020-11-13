@@ -1,10 +1,9 @@
 package com.engineering.thesis.backend.model;
 
-import com.sun.istack.NotNull;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity(name = "doctors")
@@ -14,11 +13,11 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-    @NotEmpty
+    @NotBlank
     private String name;
-    @NotEmpty
+    @NotBlank
     private String surname;
-    @NotEmpty
+    @NotBlank
     private String specialist;
 
 }
