@@ -14,7 +14,7 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 @SpringBootTest
 class BackendApplicationTests {
-	
+
 	@Test
 	public void initialTest(){
 	}
