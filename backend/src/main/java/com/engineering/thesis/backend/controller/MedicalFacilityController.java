@@ -2,17 +2,16 @@ package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.service.MedicalFacilityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("medicalFacility")
 public class MedicalFacilityController {
-
-    @Autowired
-    private MedicalFacilityService medicalFacilityService;
+    private final MedicalFacilityService medicalFacilityService;
 
     @PostMapping("/create")
     public void create(@RequestBody MedicalFacility medicalFacility) {

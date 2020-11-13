@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 @Entity(name = "patientsMedData")
 public class PatientMedicalData {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -21,8 +20,8 @@ public class PatientMedicalData {
     @ManyToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_doctor"))
     private Doctor doctor;
+
     private LocalDateTime treatmentDate;
     private String medicalProcedure;
     private String additionalNotes;
-
 }

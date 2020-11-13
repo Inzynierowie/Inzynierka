@@ -3,16 +3,15 @@ package com.engineering.thesis.backend.serviceImpl;
 import com.engineering.thesis.backend.model.Appointment;
 import com.engineering.thesis.backend.repository.AppointmentRepository;
 import com.engineering.thesis.backend.service.AppointmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AppointmentServiceImpl implements AppointmentService {
-
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+    private final AppointmentRepository appointmentRepository;
 
     @Override
     public void create(Appointment appointment) {

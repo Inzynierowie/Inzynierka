@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Data
 @Entity(name = "patients")
 public class Patient {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -19,5 +18,4 @@ public class Patient {
 
     @Column(name = "insured")
     private boolean isInsured;
-
 }

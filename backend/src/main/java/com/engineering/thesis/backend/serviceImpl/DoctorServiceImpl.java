@@ -3,16 +3,15 @@ package com.engineering.thesis.backend.serviceImpl;
 import com.engineering.thesis.backend.model.Doctor;
 import com.engineering.thesis.backend.repository.DoctorRepository;
 import com.engineering.thesis.backend.service.DoctorService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
-
-    @Autowired
-    private DoctorRepository doctorRepository;
+    private final DoctorRepository doctorRepository;
 
     @Override
     public void create(Doctor doctor) {
