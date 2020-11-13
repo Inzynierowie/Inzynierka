@@ -1,6 +1,5 @@
 package com.engineering.thesis.backend.controller;
 
-import com.engineering.thesis.backend.controller.ExceptionHandlers.PatientExceptions.PatientNotFoundException;
 import com.engineering.thesis.backend.model.Patient;
 import com.engineering.thesis.backend.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,15 +17,7 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping("/select/{id}")
-    public Patient selectPatientById(@PathVariable Long id) {
-        try {
-            Patient patient = patientService.selectPatientById(id);
-            return patient;
-        }
-        catch (Exception e){
-            throw new PatientNotFoundException(id);
-        }
-    }
+    public Patient selectPatientById(@PathVariable Long id) { return patientService.selectPatientById(id); }
 
     @GetMapping("/select")
     public List<Patient> selectAll() {

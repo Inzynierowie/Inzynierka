@@ -3,7 +3,7 @@ package com.engineering.thesis.backend.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -18,6 +18,7 @@ public class Patient {
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_user") )
     private User user;
 
+    @NotNull
     @Column(name = "insured")
     private boolean isInsured;
 }
