@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -48,14 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin(CorsConfiguration.ALL);
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:8010"));
         corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
         corsConfiguration.addAllowedMethod(HttpMethod.GET);
         corsConfiguration.addAllowedMethod(HttpMethod.POST);
         corsConfiguration.addAllowedMethod(HttpMethod.PUT);
         corsConfiguration.addAllowedMethod(HttpMethod.DELETE);
 
-        http.cors().configurationSource(request -> new CorsConfiguration(corsConfiguration)).and().csrf().disable()
+        http.cors().configurationSource(httpServletRequest -> corsConfiguration).and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
