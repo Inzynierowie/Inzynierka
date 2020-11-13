@@ -2,6 +2,7 @@ package com.engineering.thesis.backend.config.security;
 
 import com.engineering.thesis.backend.config.jwt.AuthEntryPointJwt;
 import com.engineering.thesis.backend.config.jwt.JwtRequestFilter;
+import com.engineering.thesis.backend.serviceImpl.UserDetailsServiceImpl;
 import com.engineering.thesis.backend.serviceImpl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private  final UserServiceImpl userService;
+    private  final UserDetailsServiceImpl userService;
 
     private final AuthEntryPointJwt unauthorizedHandler;
 
