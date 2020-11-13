@@ -4,8 +4,12 @@ import com.engineering.thesis.backend.config.jwt.JwtResponse;
 import com.engineering.thesis.backend.config.jwt.JwtToken;
 import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.UserRepository;
+import com.engineering.thesis.backend.request.LoginRequest;
+import com.engineering.thesis.backend.request.RegisterRequest;
 import com.engineering.thesis.backend.service.UserService;
+import com.engineering.thesis.backend.util.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +21,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -29,16 +36,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final JwtToken jwtToken;
 
     @Override
-    public ResponseEntity<?> register(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
+    public ResponseEntity<?> register(RegisterRequest signUpRequest) {
+        User user = new User();
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: Email is already in use!");
         }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        String selectedRole = user.getRole();
+        String selectedRole = signUpRequest.getRole();
         if (!selectedRole.isBlank()) {
             if (selectedRole.equals("DOCTOR")) {
                 user.setRole("ROLE_DOCTOR");
@@ -51,6 +57,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                     .body("Error: You should choose one of the roles!");
         }
 
+        user.setName(signUpRequest.getName());
+        user.setSurname(signUpRequest.getSurname());
+        user.setEmail(signUpRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
         user.setActive(true);
         userRepository.save(user);
 
@@ -58,16 +68,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public ResponseEntity<?> login(User user) {
+    public ResponseEntity<?> login(LoginRequest data) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
-                        user.getPassword())
+                        data.getEmail(),
+                        data.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtToken.generateJwtToken(authentication);
 
-        User authenticationPrincipal = (User) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         return ResponseEntity.ok(new JwtResponse(jwt,
                 user.getId(),
                 user.getName(),
@@ -75,7 +85,46 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole()));
-//        return ResponseEntity.ok();
+    }
+
+    @Override
+    public ResponseEntity<User> getUserById(Long id) throws ResourceNotFoundException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id : " + id));
+        return ResponseEntity.ok().body(user);
+    }
+
+    @Override
+    public Map<String, Boolean> deleteUserById(Long id) throws ResourceNotFoundException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for this id : " + id));
+
+        userRepository.delete(user);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
+
+    @Override
+    public ResponseEntity<User> updateUserById(Long id, User user) {
+        Optional<User> userInfo = userRepository.findById(id);
+
+        if (userInfo.isPresent()) {
+            return new ResponseEntity<>(userRepository.save(User.builder()
+                    .role(userInfo.get().getRole())
+                    .email(userInfo.get().getEmail())
+                    .name(userInfo.get().getName())
+                    .surname(userInfo.get().getSurname())
+                    .password(userInfo.get().getPassword())
+                    .build()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
