@@ -2,17 +2,16 @@ package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.service.PriceService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("api/price")
 public class PriceController {
-
-    @Autowired
-    private PriceService priceService;
+    private final PriceService priceService;
 
     @PostMapping("/create")
     public void create(@RequestBody Price price) {

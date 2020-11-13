@@ -3,7 +3,6 @@ package com.engineering.thesis.backend.config.security;
 import com.engineering.thesis.backend.config.jwt.AuthEntryPointJwt;
 import com.engineering.thesis.backend.config.jwt.JwtRequestFilter;
 import com.engineering.thesis.backend.serviceImpl.UserDetailsServiceImpl;
-import com.engineering.thesis.backend.serviceImpl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,18 +24,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private  final UserDetailsServiceImpl userService;
-
+    private final UserDetailsServiceImpl userService;
     private final AuthEntryPointJwt unauthorizedHandler;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public JwtRequestFilter authenticationJwtTokenFilter() {
-        return new JwtRequestFilter();
     }
 
     @Bean
@@ -58,6 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api", "/api/**").hasAnyRole("DOCTOR", "PATIENT");
 
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

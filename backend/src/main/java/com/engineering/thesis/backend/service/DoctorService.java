@@ -6,10 +6,7 @@ import java.util.List;
 
 public interface DoctorService {
     void create(Doctor doctor);
-
     void deleteById(Long id);
-
     List<Doctor> selectAll();
-
     Doctor selectDoctorById(Long id);
 }

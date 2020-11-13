@@ -5,6 +5,7 @@ import com.engineering.thesis.backend.request.LoginRequest;
 import com.engineering.thesis.backend.request.RegisterRequest;
 import com.engineering.thesis.backend.service.UserService;
 import com.engineering.thesis.backend.util.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,13 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest data) {

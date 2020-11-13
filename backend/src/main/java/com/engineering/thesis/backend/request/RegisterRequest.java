@@ -10,7 +10,6 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 public class RegisterRequest {
-
     @NotBlank
     private String name;
     @NotBlank

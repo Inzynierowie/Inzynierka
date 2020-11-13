@@ -15,7 +15,6 @@ public class JwtResponse {
     private String email;
     private String role;
 
-
     public String getAccessToken() {
         return token;
     }
@@ -23,5 +22,4 @@ public class JwtResponse {
     public void setAccessToken(String accessToken) {
         this.token = accessToken;
     }
-
 }

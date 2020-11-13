@@ -6,10 +6,7 @@ import java.util.List;
 
 public interface PriceService {
     void create(Price price);
-
     void deleteById(Long id);
-
     List<Price> selectAll();
-
     Price selectPriceById(Long id);
 }
