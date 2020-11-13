@@ -4,3 +4,4 @@ DELETE FROM doctors;
 DELETE FROM patients;
 DELETE FROM medical_facility;
 DELETE FROM price_list;
+DELETE FROM users;
