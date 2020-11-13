@@ -1,6 +1,7 @@
 package com.engineering.thesis.backend.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,12 +9,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity(name = "users")
 public class User implements UserDetails {
 
@@ -22,10 +27,22 @@ public class User implements UserDetails {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String surname;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 6, max = 30)
     private String password;
+
+    @NotBlank
     private String role;
 
     @Column(name = "is_active")
