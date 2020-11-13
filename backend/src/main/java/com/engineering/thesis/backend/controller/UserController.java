@@ -1,16 +1,16 @@
 package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.User;
+import com.engineering.thesis.backend.request.LoginRequest;
+import com.engineering.thesis.backend.request.RegisterRequest;
 import com.engineering.thesis.backend.service.UserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.engineering.thesis.backend.util.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -22,13 +22,32 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        return userService.login(user);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest data) {
+        return userService.login(data);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User user)
-    {
-        return userService.register(user);
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest signUpRequest) {
+        return userService.register(signUpRequest);
+    }
+
+    @GetMapping("/api/users")
+    public List<User> findAllUsers() {
+        return userService.findAllUsers();
+    }
+
+    @GetMapping("/api/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        return userService.getUserById(id);
+    }
+
+    @DeleteMapping("/api/users/{id}")
+    public Map<String, Boolean> deleteUserById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        return userService.deleteUserById(id);
+    }
+
+    @PutMapping("/api/users/{id}")
+    public ResponseEntity<User> updateUserById(@PathVariable("id") Long id, @RequestBody User user) {
+        return userService.updateUserById(id, user);
     }
 }
