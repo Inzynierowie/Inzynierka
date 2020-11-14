@@ -2,7 +2,11 @@ package com.engineering.thesis.backend.serviceImpl;
 
 import com.engineering.thesis.backend.config.jwt.JwtResponse;
 import com.engineering.thesis.backend.config.jwt.JwtToken;
+import com.engineering.thesis.backend.model.Doctor;
+import com.engineering.thesis.backend.model.Patient;
 import com.engineering.thesis.backend.model.User;
+import com.engineering.thesis.backend.repository.DoctorRepository;
+import com.engineering.thesis.backend.repository.PatientRepository;
 import com.engineering.thesis.backend.repository.UserRepository;
 import com.engineering.thesis.backend.request.LoginRequest;
 import com.engineering.thesis.backend.request.RegisterRequest;
@@ -17,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +35,10 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtToken jwtToken;
+    private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
 
+    @Transactional
     @Override
     public ResponseEntity<?> register(RegisterRequest signUpRequest) {
         User user = new User();
@@ -44,8 +52,15 @@ public class UserServiceImpl implements UserService {
         if (!selectedRole.isBlank()) {
             if (selectedRole.equals("DOCTOR")) {
                 user.setRole("ROLE_DOCTOR");
+                Doctor doctor = new Doctor();
+                doctor.setUser(user);
+                doctorRepository.save(doctor);
             } else {
                 user.setRole("ROLE_PATIENT");
+                Patient patient = new Patient();
+                patient.setUser(user);
+                patient.setInsured(false);
+                patientRepository.save(patient);
             }
         } else {
             return ResponseEntity
