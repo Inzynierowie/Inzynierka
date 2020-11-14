@@ -45,5 +45,18 @@ In order to run application you need to:
 
 * You can run application from run dir via:
 
-##### mvn_run_dbg.bat (create db from scratch and fill data via data.sql file)
-##### mvn_run_prod.bat (doesn't perform any changes to db itself)
+###### mvn_run_dbg.bat (create db from scratch and fill data via data.sql file)
+###### mvn_run_prod.bat (doesn't perform any changes to db itself)
+
+# Spring Security - create token
+
+To log in, use sample login data or register a new account.
+
+In POSTMAN on endpoint localhost:8010/login post data
+
+    "email" : ,
+    "password" :
+    
+It'll give you back a token to use other secured endpoints.
+
+For this, copy and go to "Authorization", select the type of Bearer Token and paste the token.
