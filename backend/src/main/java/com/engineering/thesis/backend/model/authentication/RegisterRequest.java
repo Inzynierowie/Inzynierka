@@ -1,4 +1,4 @@
-package com.engineering.thesis.backend.request;
+package com.engineering.thesis.backend.model.authentication;
 
 import lombok.Getter;
 import lombok.Setter;

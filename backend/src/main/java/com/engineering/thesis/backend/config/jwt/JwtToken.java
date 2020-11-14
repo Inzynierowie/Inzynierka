@@ -2,20 +2,23 @@ package com.engineering.thesis.backend.config.jwt;
 
 import com.engineering.thesis.backend.model.User;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.impl.crypto.MacProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
 
+import static io.jsonwebtoken.SignatureAlgorithm.HS512;
+
+@Slf4j
 @Component
 public class JwtToken {
-    private static final Logger logger = LoggerFactory.getLogger(JwtToken.class);
-
-    @Value("${jwt.jwtSecret}")
-    private String jwtSecret;
+    private static final Key jwtSecret = MacProvider.generateKey();
 
     @Value("${jwt.jwtExpirationMs}")
     private int jwtExpirationMs;
@@ -27,7 +30,7 @@ public class JwtToken {
                 .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(HS512, jwtSecret)
                 .compact();
     }
 
@@ -39,20 +42,20 @@ public class JwtToken {
                 .getSubject();
     }
 
-    public boolean validateJwtToken(String authToken) {
+    public boolean isTokenValid(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
-            logger.error("Invalid JWT signature: {}", e.getMessage());
+            log.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
+            log.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage());
+            log.error("JWT token is expired: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
-            logger.error("JWT token is unsupported: {}", e.getMessage());
+            log.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage());
+            log.error("JWT claims string is empty: {}", e.getMessage());
         }
         return false;
     }

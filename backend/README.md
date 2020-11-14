@@ -50,13 +50,11 @@ In order to run application you need to:
 
 # Spring Security - create token
 
-To log in, use sample login data or register a new account.
+To login, use sample login data or register a new account.
 
-In POSTMAN on endpoint localhost:8010/login post data
+In order to login use endpoint /login and post data
 
     "email" : ,
     "password" :
     
-It'll give you back a token to use other secured endpoints.
-
-For this, copy and go to "Authorization", select the type of Bearer Token and paste the token.
+It'll give you back a token. Use token to pass secured endpoints.
