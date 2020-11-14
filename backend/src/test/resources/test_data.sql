@@ -9,7 +9,7 @@ INSERT INTO price_list (treatment,price) VALUES ('Appendectomy', 2904);
 INSERT INTO price_list (treatment,price) VALUES ('Appendectomy', 3680);
 INSERT INTO price_list (treatment,price) VALUES ('Cholecystectomy', 4042);
 
-INSERT INTO users(name,surname,email,password,role,is_active) VALUES ('Mia', 'Khalifa', 'm_kfalifa@poczta.pl', '$2a$10$hIpf0bVlNlpVsg5Bp.cBUegHptzyQeO9LgVPQUWC./0J9DIuvDnaa', 'ROLE_DOCTOR', TRUE);
+INSERT INTO users(name,surname,email,password,role,is_active) VALUES ('Mia', 'Khalifa', 'm_kfalifa@poczta.pl', '$2a$10$0qHIW6Gxq0MIJIuiTz0fDeqV3Ug.KbFiI1zUM.ybIsO6L57yag6m.', 'ROLE_DOCTOR', TRUE);
 INSERT INTO users(name,surname,email,password,role,is_active) VALUES ('Eva', 'Elfie', 'e_elf@op.pl', '$2a$10$KrqrfA3OsQgp5FOkx5EO.eRDZT71h6pvOEV5M53UHDsegkwJhrfQW', 'ROLE_PATIENT', TRUE);
 INSERT INTO users(name,surname,email,password,role,is_active) VALUES ('Elsa', 'Jean', 'e.jean@gmail.com', '$2a$10$yYAXUXpNg4OmsnUiY.q3yeEMNz3Be6h8RfR1rtmwSRPph86ZOUQ4S', 'ROLE_PATIENT', TRUE);
 INSERT INTO users(name,surname,email,password,role,is_active) VALUES ('Lisa', 'Ann', 'ann_lisa@gmail.com', '$2a$10$kGPiO8W5ESdszOrBvFEibOHtTgJbMFRdsDfJfdWru1WOUAsWyDkDa', 'ROLE_PATIENT', TRUE);

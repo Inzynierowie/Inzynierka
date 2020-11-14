@@ -17,9 +17,7 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping("/select/{id}")
-    public Patient selectPatientById(@PathVariable Long id) {
-        return patientService.selectPatientById(id);
-    }
+    public Patient selectPatientById(@PathVariable Long id) { return patientService.selectPatientById(id); }
 
     @GetMapping("/select")
     public List<Patient> selectAll() {

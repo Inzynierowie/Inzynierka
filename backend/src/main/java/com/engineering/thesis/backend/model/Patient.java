@@ -3,6 +3,8 @@ package com.engineering.thesis.backend.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Entity(name = "patients")
@@ -17,5 +19,6 @@ public class Patient {
     private User user;
 
     @Column(name = "insured")
+    @NotNull
     private boolean isInsured;
 }
