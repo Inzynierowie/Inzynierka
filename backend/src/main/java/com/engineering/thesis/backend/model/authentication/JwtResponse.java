@@ -1,4 +1,4 @@
-package com.engineering.thesis.backend.config.jwt;
+package com.engineering.thesis.backend.model.authentication;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class JwtResponse {
-
     private String token;
     private Long id;
     private String name;
@@ -14,12 +13,4 @@ public class JwtResponse {
     private String username;
     private String email;
     private String role;
-
-    public String getAccessToken() {
-        return token;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.token = accessToken;
-    }
 }
