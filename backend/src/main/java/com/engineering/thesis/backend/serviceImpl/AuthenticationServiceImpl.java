@@ -44,14 +44,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .body("Error: Email is already in use!");
         }
 
-        String role = signUpRequest.getRole();
-        if (role.isBlank()) {
+        if (signUpRequest.getRole().isBlank()) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: You should choose one of the roles!");
         }
 
-        UserRole userRole = UserRole.parse(role);
+        UserRole userRole = UserRole.parse(signUpRequest.getRole());
         save(signUpRequest, user, userRole);
         saveRelated(user);
 
