@@ -2,20 +2,20 @@ package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.service.PatientMedicalDataService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("patientMedicalData")
+@RequiredArgsConstructor
+@RequestMapping("api/patientMedicalData")
 public class PatientMedicalDataController {
-
-    @Autowired
-    private PatientMedicalDataService patientMedicalDataService;
+    private final PatientMedicalDataService patientMedicalDataService;
 
     @PostMapping("/create")
-    public void create(@RequestBody PatientMedicalData patientMedicalData){
+    public void create(@RequestBody PatientMedicalData patientMedicalData) {
         patientMedicalDataService.create(patientMedicalData);
     }
 
@@ -25,7 +25,7 @@ public class PatientMedicalDataController {
     }
 
     @GetMapping("/select")
-    public List<PatientMedicalData> selectAll(){
+    public List<PatientMedicalData> selectAll() {
         return patientMedicalDataService.selectAll();
     }
 
@@ -33,6 +33,4 @@ public class PatientMedicalDataController {
     public void deleteById(@PathVariable Long id) {
         patientMedicalDataService.deleteById(id);
     }
-
-
 }

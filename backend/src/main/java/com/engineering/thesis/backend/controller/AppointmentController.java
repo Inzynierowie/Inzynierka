@@ -2,20 +2,19 @@ package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.Appointment;
 import com.engineering.thesis.backend.service.AppointmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("appointment")
+@RequiredArgsConstructor
+@RequestMapping("api/appointment")
 public class AppointmentController {
-
-    @Autowired
-    private AppointmentService appointmentService;
+    private final AppointmentService appointmentService;
 
     @PostMapping("/create")
-    public void create(@RequestBody Appointment appointment){
+    public void create(@RequestBody Appointment appointment) {
         appointmentService.create(appointment);
     }
 
@@ -25,7 +24,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/select")
-    public List<Appointment> selectAll(){
+    public List<Appointment> selectAll() {
         return appointmentService.selectAll();
     }
 

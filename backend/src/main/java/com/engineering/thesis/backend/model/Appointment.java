@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @Entity(name = "appointments")
 public class Appointment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -28,5 +27,4 @@ public class Appointment {
     private long cost;
     @NotNull
     private LocalDateTime appointmentDate;
-
 }

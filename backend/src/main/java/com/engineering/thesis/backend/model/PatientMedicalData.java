@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Data
 @Entity(name = "patientsMedData")
 public class PatientMedicalData {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -30,5 +29,4 @@ public class PatientMedicalData {
     private String medicalProcedure;
     @NotBlank
     private String additionalNotes;
-
 }
