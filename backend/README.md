@@ -42,3 +42,8 @@ In order to run application you need to:
 * Run application:
 
 ###### mvn spring-boot:run
+
+* You can run application from run dir via:
+
+##### mvn_run_dbg.bat (create db from scratch and fill data via data.sql file)
+##### mvn_run_prod.bat (doesn't perform any changes to db itself)
