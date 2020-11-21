@@ -3,16 +3,16 @@ package com.engineering.thesis.backend.serviceImpl;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.PriceRepository;
 import com.engineering.thesis.backend.service.PriceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PriceServiceImpl implements PriceService {
-
-    @Autowired
-    private PriceRepository priceRepository;
+    private final PriceRepository priceRepository;
 
     @Override
     public void create(Price price) {

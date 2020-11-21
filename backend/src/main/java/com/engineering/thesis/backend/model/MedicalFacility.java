@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity(name = "medicalFacility")
 public class MedicalFacility {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -28,5 +27,4 @@ public class MedicalFacility {
     @NotNull
     @Range(min = 100000000)
     private long contactNumber;
-
 }
