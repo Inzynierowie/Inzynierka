@@ -14,7 +14,7 @@ public class MedicalFacility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-
+//tak
     @NotBlank
     private String name;
     @NotBlank
