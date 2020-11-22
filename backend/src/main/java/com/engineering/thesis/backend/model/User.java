@@ -31,12 +31,12 @@ public class User implements UserDetails {
 
     @NotBlank
     private String surname;
-
+//coś tam
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
-//nie
+//dupsko
     @NotBlank
     @Size(min = 6, max = 250)
     private String password;
