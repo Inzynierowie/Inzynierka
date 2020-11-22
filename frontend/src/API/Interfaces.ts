@@ -40,3 +40,5 @@ export interface PriceI {
   treatment: string;
   price: number;
 }
+
+// TODO: Expand User Interface so we can add it to LoginHook and reuse later on.

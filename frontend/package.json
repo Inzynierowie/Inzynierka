@@ -24,7 +24,9 @@
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.0",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
+    "react-loading": "^2.0.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.3",
     "typescript": "^3.9.7"

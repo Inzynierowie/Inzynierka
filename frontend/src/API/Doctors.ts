@@ -12,3 +12,14 @@ export const useAppointmentGetter = (appointmentId: AppointmentI["id"]) => {
 
   return [data, loading, error, refetch];
 };
+
+export const useLoginPost = (login: string, password: string) => {
+  const [user, setUser] = useState({
+    email: login,
+    password: password,
+  });
+
+  const [{ data, loading, error }, refetch] = useAxios({ url: `${api_base}login`, method: "POST", data: user });
+
+  return [data, loading, error, refetch, setUser];
+};
