@@ -8,5 +8,6 @@ public interface DoctorService {
     void create(Doctor doctor);
     void deleteById(Long id);
     List<Doctor> selectAll();
-    Doctor selectDoctorById(Long id);
+    Doctor selectById(Long id);
+    Doctor selectByUserId(Long userId);
 }
