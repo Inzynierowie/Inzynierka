@@ -19,11 +19,6 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        patientRepository.deleteById(id);
-    }
-
-    @Override
     public List<Patient> selectAll() {
         return patientRepository.findAll();
     }
