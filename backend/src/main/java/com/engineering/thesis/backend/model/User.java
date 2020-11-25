@@ -33,12 +33,9 @@ public class User implements UserDetails {
     private String surname;
 
     @NotBlank
-    @Size(max = 50)
-    @Email
     private String email;
 
     @NotBlank
-    @Size(min = 6, max = 250)
     private String password;
 
     @NotBlank
