@@ -15,9 +15,8 @@ public class Price {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-    @NotBlank
+    @NotBlank(message = "Treatment can't be empty")
     private String treatment;
-    @NotNull
-    @Range(min = 0)
+    @Range(min = 0, message = "Price must be at least {min}")
     private Long price;
 }

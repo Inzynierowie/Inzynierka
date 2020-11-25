@@ -12,11 +12,9 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_user"))
     private User user;
-
-    @NotBlank
+    @NotBlank(message = "Specialist can't be empty")
     private String specialist;
 }

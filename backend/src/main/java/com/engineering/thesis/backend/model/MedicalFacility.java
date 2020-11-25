@@ -15,15 +15,13 @@ public class MedicalFacility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-    @NotBlank
+    @NotBlank(message = "Name can't be empty")
     private String name;
-    @NotBlank
+    @NotBlank(message = "Localization can't be empty")
     private String localization;
-    @NotNull
-    @Range(min = 0)
+    @Range(min = 0, message = "Doctor count must be at least {min}")
     private long doctorCount;
-    @NotNull
-    @Range(min = 0)
+    @Range(min = 0, message = "Patient count must be at least {min}")
     private long patientCount;
     @NotBlank(message = "Phone can't be empty")
     @Pattern(regexp = "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]{8,}$",

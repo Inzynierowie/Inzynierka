@@ -14,17 +14,15 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-
     @OneToOne
     @JoinColumn(name = "patient_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_patient"))
+    @NotNull(message = "Patient can't be empty")
     private Patient patient;
-
     @OneToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_doctor"))
     private Doctor doctor;
-    @NotNull
-    @Range(min = 0)
+    @Range(min = 0, message = "Cost must be at least {min}")
     private long cost;
-    @NotNull
+    @NotNull(message = "Date can't be empty")
     private LocalDateTime appointmentDate;
 }
