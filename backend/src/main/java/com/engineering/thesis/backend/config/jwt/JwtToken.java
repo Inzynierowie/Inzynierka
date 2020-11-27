@@ -2,15 +2,11 @@ package com.engineering.thesis.backend.config.jwt;
 
 import com.engineering.thesis.backend.model.User;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.impl.crypto.MacProvider;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
 import java.util.Date;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS512;
@@ -18,7 +14,9 @@ import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 @Slf4j
 @Component
 public class JwtToken {
-    private static final Key jwtSecret = MacProvider.generateKey();
+
+    @Value("${jwt.jwtSecret}")
+    private String jwtSecret;
 
     @Value("${jwt.jwtExpirationMs}")
     private int jwtExpirationMs;
