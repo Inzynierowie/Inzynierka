@@ -3,14 +3,14 @@ package com.engineering.thesis.backend.serviceImpl.user;
 import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.UserRepository;
+import com.engineering.thesis.backend.service.DoctorService;
+import com.engineering.thesis.backend.service.PatientService;
 import com.engineering.thesis.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -20,23 +20,23 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final PatientService patientService;
+    private final DoctorService doctorService;
 
     @Override
-    public ResponseEntity<User> findUserById(Long id) throws ResourceNotFoundException {
+    public ResponseEntity<User> findById(Long id) throws ResourceNotFoundException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id : " + id));
         return ResponseEntity.ok().body(user);
     }
 
     @Override
-    public Map<String, Boolean> deleteUserById(Long id) throws ResourceNotFoundException {
+    public void deactivateAccountById(Long id) throws ResourceNotFoundException {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id : " + id));
 
-        userRepository.delete(user);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        user.setActive(false);
+        userRepository.save(user);
     }
 
     @Override
