@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PatientService {
     void create(Patient patient);
-    void deleteById(Long id);
     List<Patient> selectAll();
-    Patient selectPatientById(Long id);
+    Patient selectById(Long id);
+    Patient selectByUserId(Long userId);
 }
