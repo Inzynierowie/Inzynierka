@@ -19,17 +19,17 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        patientRepository.deleteById(id);
-    }
-
-    @Override
     public List<Patient> selectAll() {
         return patientRepository.findAll();
     }
 
     @Override
-    public Patient selectPatientById(Long id) {
+    public Patient selectById(Long id) {
         return patientRepository.findById(id).get();
+    }
+
+    @Override
+    public Patient selectByUserId(Long userId) {
+        return patientRepository.findByUserId(userId);
     }
 }
