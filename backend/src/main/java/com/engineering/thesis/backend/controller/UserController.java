@@ -1,14 +1,13 @@
 package com.engineering.thesis.backend.controller;
 
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.service.UserService;
-import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,12 +21,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
-        return userService.findUserById(id);
+        return userService.findById(id);
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Boolean> deleteUserById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
-        return userService.deleteUserById(id);
+    public void deactivateAccountById(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        userService.deactivateAccountById(id);
     }
 
     @PutMapping("/{id}")

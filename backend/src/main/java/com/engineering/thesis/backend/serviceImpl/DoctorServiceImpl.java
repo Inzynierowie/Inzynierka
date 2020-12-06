@@ -19,17 +19,17 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        doctorRepository.deleteById(id);
-    }
-
-    @Override
     public List<Doctor> selectAll() {
         return doctorRepository.findAll();
     }
 
     @Override
-    public Doctor selectDoctorById(Long id) {
+    public Doctor selectById(Long id) {
         return doctorRepository.findById(id).get();
+    }
+
+    @Override
+    public Doctor selectByUserId(Long userId) {
+        return doctorRepository.findByUserId(userId);
     }
 }
