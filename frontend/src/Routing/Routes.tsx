@@ -1,24 +1,31 @@
+import { Doctors, Home, Login, NotFound, Register, Visits } from "../pages";
+import { Footer, Header } from "../components";
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
-import { Home, Login, Doctors, Visits, NotFound } from "../pages";
+import PrivateRoute from "./PrivateRoute";
 
 const Routes: React.FC = () => {
-  // This state should come from cookies
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  return isLoggedIn ? (
+  return (
     <Router>
+      <Header />
       <Switch>
         {/* Gonna need layout here to manage login state (logout and such) */}
-        <Route exact={true} path="/" component={Home} />
-        <Route exact={true} path="/doctors" component={Doctors} />
-        <Route exact={true} path="/visits" component={Visits} />
-        <Route exact={true} path="*" component={NotFound} />
+        <PrivateRoute isLoggedIn={isLoggedIn} exact={true} path="/" component={Home} />
+        <PrivateRoute isLoggedIn={isLoggedIn} exact={true} path="/doctors" component={Doctors} />
+        <PrivateRoute isLoggedIn={isLoggedIn} exact={true} path="/visits" component={Visits} />
+        <Route
+          exact={true}
+          path="/login"
+          component={() => <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
+        />
+        <Route exact={true} path="/register" component={() => <Register />} />
+        <Route path="*" component={NotFound} />
       </Switch>
+      <Footer />
     </Router>
-  ) : (
-    <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
   );
 };
 
