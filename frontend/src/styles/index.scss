@@ -3,8 +3,13 @@
 @import "./variables";
 @import "./mixins";
 @import "./classes";
+@import "./overrides";
 
 // Pages styling
 @import "../pages/Login/Login";
 
 // Components styles
+
+// Bootstrap
+@import "node_modules/bootstrap/scss/bootstrap.scss";
+@import "node_modules/react-toastify/scss/main.scss";
