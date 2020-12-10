@@ -1,6 +1,6 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -10,6 +10,10 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity(name = "priceList")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
