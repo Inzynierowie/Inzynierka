@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class PriceController {
     }
 
     @GetMapping("/select/{id}")
-    public Price selectPriceById(@PathVariable Long id) {
+    public Optional<Price> selectPriceById(@PathVariable Long id) {
         return priceService.selectPriceById(id);
     }
 

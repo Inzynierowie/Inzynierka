@@ -26,29 +26,21 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class CrudTest {
 
-    @Mock
+    @Mock(lenient = true)
     private PriceRepository priceService;
 
     @InjectMocks
     private PriceServiceImpl priceServiceImpl;
 
     @Test
-    void shouldSavedUserSuccessFully() {
+    void shouldSavedPriceSuccessFully() {
         final Price price = new Price(null, "Testing",1000l);
-
-        //given(priceServiceImpl.selectPriceById(price.getId())).willReturn(throw new NoSuchElementException(""));
-        //given(priceServiceImpl.selectPriceById(price.getId()))
-        //        .willThrow(new NoSuchElementException("Can't handle obj with id = null"));
         given(priceServiceImpl.selectPriceById(price.getId()))
-                .willThrow(new NoSuchElementException());
+                .willReturn(Optional.empty());
         given(priceService.save(price)).willAnswer(invocation -> invocation.getArgument(0));
-
         Price savedUser = priceService.save(price);
-
         assertThat(savedUser).isNotNull();
-
         verify(priceService).save(any(Price.class));
-
     }
 
     /*@Test

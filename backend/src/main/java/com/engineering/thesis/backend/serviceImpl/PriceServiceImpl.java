@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +31,7 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public Price selectPriceById(Long id) {
-        return priceRepository.findById(id).get();
+    public Optional<Price> selectPriceById(Long id) {
+        return priceRepository.findById(id);
     }
 }
