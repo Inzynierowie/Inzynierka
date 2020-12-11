@@ -1,6 +1,6 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -8,6 +8,10 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity(name = "patients")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

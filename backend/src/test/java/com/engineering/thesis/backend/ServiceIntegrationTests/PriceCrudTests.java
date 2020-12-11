@@ -1,6 +1,6 @@
 package com.engineering.thesis.backend.ServiceIntegrationTests;
 
-import com.engineering.thesis.backend.exception.PriceCreateException;
+import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.PriceRepository;
 import com.engineering.thesis.backend.serviceImpl.PriceServiceImpl;
@@ -36,8 +36,8 @@ public class PriceCrudTests {
         given(priceServiceImpl.selectPriceById(price.getId()))
                 .willReturn(Optional.empty());
         given(priceService.save(price)).willAnswer(invocation -> invocation.getArgument(0));
-        Price savedUser = priceService.save(price);
-        assertThat(savedUser).isNotNull();
+        Price savedPrice = priceService.save(price);
+        assertThat(savedPrice).isNotNull();
         verify(priceService).save(any(Price.class));
     }
 
@@ -45,7 +45,7 @@ public class PriceCrudTests {
     void shouldThrowExceptionWhenSavePriceWithExistingID() {
         final Price price = new Price(1L, "Testing",1000l);
         given(priceService.findById(price.getId())).willReturn(Optional.of(price));
-        assertThrows(PriceCreateException.class,() -> {
+        assertThrows(CreateObjException.class,() -> {
             priceServiceImpl.create(price);
         });
         verify(priceService, never()).save(any(Price.class));
@@ -72,7 +72,7 @@ public class PriceCrudTests {
     }
 
     @Test
-    void shouldfindPriceById(){
+    void shouldFindPriceById(){
         final Long id = 1L;
         final Price price = new Price(1L, "Testing",1000l);
         given(priceService.findById(id)).willReturn(Optional.of(price));
@@ -87,6 +87,4 @@ public class PriceCrudTests {
         priceServiceImpl.deleteById(priceId);
         verify(priceService, times(2)).deleteById(priceId);
     }
-
-
 }

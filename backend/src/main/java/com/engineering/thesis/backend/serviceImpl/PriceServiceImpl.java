@@ -1,12 +1,10 @@
 package com.engineering.thesis.backend.serviceImpl;
 
-import com.engineering.thesis.backend.exception.PriceCreateException;
-import com.engineering.thesis.backend.model.Patient;
+import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.PriceRepository;
 import com.engineering.thesis.backend.service.PriceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,9 +17,9 @@ public class PriceServiceImpl implements PriceService {
 
     @Override
     public Price create(Price price) {
-        Optional<Price> priceOptiona = priceRepository.findById(price.getId());
-        if(priceOptiona.isPresent()) {
-            throw new PriceCreateException("User with email "+ price.getId()+" already exists");
+        Optional<Price> priceOptional = priceRepository.findById(price.getId());
+        if(priceOptional.isPresent()) {
+            throw new CreateObjException("User with Id "+ price.getId()+" already exists");
         }
         return priceRepository.save(price);
     }

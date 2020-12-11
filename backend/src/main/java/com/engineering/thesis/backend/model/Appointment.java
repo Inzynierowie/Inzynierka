@@ -1,6 +1,6 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -9,6 +9,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity(name = "appointments")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

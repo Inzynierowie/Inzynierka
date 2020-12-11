@@ -1,6 +1,6 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.Data;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -10,6 +10,10 @@ import javax.validation.constraints.Pattern;
 
 @Data
 @Entity(name = "medicalFacility")
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class MedicalFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
