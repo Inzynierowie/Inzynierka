@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PriceService {
-    void create(Price price);
+    Price create(Price price);
+    Price update(Price price);
     void deleteById(Long id);
     List<Price> selectAll();
     Optional<Price> selectPriceById(Long id);

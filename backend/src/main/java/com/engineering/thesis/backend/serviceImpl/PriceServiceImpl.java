@@ -1,5 +1,7 @@
 package com.engineering.thesis.backend.serviceImpl;
 
+import com.engineering.thesis.backend.exception.PriceCreateException;
+import com.engineering.thesis.backend.model.Patient;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.PriceRepository;
 import com.engineering.thesis.backend.service.PriceService;
@@ -16,8 +18,17 @@ public class PriceServiceImpl implements PriceService {
     private final PriceRepository priceRepository;
 
     @Override
-    public void create(Price price) {
-        priceRepository.save(price);
+    public Price create(Price price) {
+        Optional<Price> priceOptiona = priceRepository.findById(price.getId());
+        if(priceOptiona.isPresent()) {
+            throw new PriceCreateException("User with email "+ price.getId()+" already exists");
+        }
+        return priceRepository.save(price);
+    }
+
+    @Override
+    public Price update(Price price) {
+        return priceRepository.save(price);
     }
 
     @Override
