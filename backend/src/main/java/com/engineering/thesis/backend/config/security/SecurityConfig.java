@@ -6,6 +6,8 @@ import com.engineering.thesis.backend.serviceImpl.user.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,6 +29,7 @@ import static org.springframework.web.cors.CorsConfiguration.ALL;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
