@@ -1,5 +1,7 @@
 package com.engineering.thesis.backend.serviceImpl;
 
+import com.engineering.thesis.backend.exception.CreateObjException;
+import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.repository.PatientMedicalDataRepository;
 import com.engineering.thesis.backend.service.PatientMedicalDataService;
@@ -7,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,8 +17,17 @@ public class PatientMedicalDataServiceImpl implements PatientMedicalDataService 
     private final PatientMedicalDataRepository patientMedicalDataRepository;
 
     @Override
-    public void create(PatientMedicalData patientMedicalData) {
-        patientMedicalDataRepository.save(patientMedicalData);
+    public PatientMedicalData create(PatientMedicalData patientMedicalData) {
+        Optional<PatientMedicalData> medFacOptional = patientMedicalDataRepository.findById(patientMedicalData.getId());
+        if(medFacOptional.isPresent()) {
+            throw new CreateObjException("PatientMedicalData with Id "+ patientMedicalData.getId()+" already exists");
+        }
+        return patientMedicalDataRepository.save(patientMedicalData);
+    }
+
+    @Override
+    public PatientMedicalData update(PatientMedicalData patientMedicalData) {
+        return patientMedicalDataRepository.save(patientMedicalData);
     }
 
     @Override
@@ -29,7 +41,7 @@ public class PatientMedicalDataServiceImpl implements PatientMedicalDataService 
     }
 
     @Override
-    public PatientMedicalData selectPatientMedicalDataById(Long id) {
-        return patientMedicalDataRepository.findById(id).get();
+    public Optional<PatientMedicalData> selectPatientMedicalDataById(Long id) {
+        return patientMedicalDataRepository.findById(id);
     }
 }

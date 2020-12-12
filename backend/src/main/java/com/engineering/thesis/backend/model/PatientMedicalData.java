@@ -31,6 +31,6 @@ public class PatientMedicalData {
     private LocalDateTime treatmentDate;
     @NotBlank
     private String medicalProcedure;
-    @NotBlank
+
     private String additionalNotes;
 }

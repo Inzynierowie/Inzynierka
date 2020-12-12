@@ -1,5 +1,6 @@
 package com.engineering.thesis.backend.controller;
 
+import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.service.PatientMedicalDataService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,8 +21,13 @@ public class PatientMedicalDataController {
         patientMedicalDataService.create(patientMedicalData);
     }
 
+    @PutMapping("/update")
+    public void update(@RequestBody PatientMedicalData patientMedicalData) {
+        patientMedicalDataService.update(patientMedicalData);
+    }
+
     @GetMapping("/select/{id}")
-    public PatientMedicalData selectPatientMedicalDataById(@PathVariable Long id) {
+    public Optional<PatientMedicalData> selectPatientMedicalDataById(@PathVariable Long id) {
         return patientMedicalDataService.selectPatientMedicalDataById(id);
     }
 
