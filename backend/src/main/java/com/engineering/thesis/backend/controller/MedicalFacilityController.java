@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.MedicalFacility;
-import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.service.MedicalFacilityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,11 @@ public class MedicalFacilityController {
     @PostMapping("/create")
     public void create(@RequestBody MedicalFacility medicalFacility) {
         medicalFacilityService.create(medicalFacility);
+    }
+
+    @PutMapping("/update")
+    public void update(@RequestBody MedicalFacility medicalFacility) {
+        medicalFacilityService.update(medicalFacility);
     }
 
     @GetMapping("/select/{id}")

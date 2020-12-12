@@ -19,6 +19,11 @@ public class PriceController {
         priceService.create(price);
     }
 
+    @PutMapping("/update")
+    public void update(@RequestBody Price price) {
+        priceService.update(price);
+    }
+
     @GetMapping("/select/{id}")
     public Optional<Price> selectPriceById(@PathVariable Long id) {
         return priceService.selectPriceById(id);

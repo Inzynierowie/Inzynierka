@@ -3,10 +3,7 @@ package com.engineering.thesis.backend.controller;
 import com.engineering.thesis.backend.model.Doctor;
 import com.engineering.thesis.backend.service.DoctorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,6 +12,11 @@ import java.util.List;
 @RequestMapping("api/doctor")
 public class DoctorController {
     private final DoctorService doctorService;
+
+    @PutMapping("/update")
+    public void update(@RequestBody Doctor doctor) {
+        doctorService.update(doctor);
+    }
 
     @GetMapping("/select/{id}")
     public Doctor selectById(@PathVariable Long id) {
