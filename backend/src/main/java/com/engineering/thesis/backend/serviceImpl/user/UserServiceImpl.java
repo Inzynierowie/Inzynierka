@@ -20,8 +20,6 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PatientService patientService;
-    private final DoctorService doctorService;
 
     @Override
     public ResponseEntity<User> findById(Long id) throws ResourceNotFoundException {
