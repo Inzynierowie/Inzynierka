@@ -2,7 +2,6 @@ package com.engineering.thesis.backend.ServiceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Doctor;
-import com.engineering.thesis.backend.model.Patient;
 import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.DoctorRepository;
 import com.engineering.thesis.backend.serviceImpl.DoctorServiceImpl;
@@ -12,7 +11,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

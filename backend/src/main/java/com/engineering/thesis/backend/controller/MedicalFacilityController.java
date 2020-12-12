@@ -1,11 +1,13 @@
 package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.MedicalFacility;
+import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.service.MedicalFacilityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class MedicalFacilityController {
     }
 
     @GetMapping("/select/{id}")
-    public MedicalFacility selectMedicalFacilityById(@PathVariable Long id) {
+    public Optional<MedicalFacility> selectMedicalFacilityById(@PathVariable Long id) {
         return medicalFacilityService.selectMedicalFacilityById(id);
     }
 
