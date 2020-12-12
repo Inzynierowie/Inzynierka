@@ -19,7 +19,7 @@ public class PriceServiceImpl implements PriceService {
     public Price create(Price price) {
         Optional<Price> priceOptional = priceRepository.findById(price.getId());
         if(priceOptional.isPresent()) {
-            throw new CreateObjException("User with Id "+ price.getId()+" already exists");
+            throw new CreateObjException("Price with Id "+ price.getId()+" already exists");
         }
         return priceRepository.save(price);
     }
