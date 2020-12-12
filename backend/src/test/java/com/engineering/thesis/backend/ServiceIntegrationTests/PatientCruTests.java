@@ -2,7 +2,6 @@ package com.engineering.thesis.backend.ServiceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Patient;
-import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.PatientRepository;
 import com.engineering.thesis.backend.serviceImpl.PatientServiceImpl;

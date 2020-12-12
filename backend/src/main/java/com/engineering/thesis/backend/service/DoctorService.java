@@ -1,12 +1,15 @@
 package com.engineering.thesis.backend.service;
 
 import com.engineering.thesis.backend.model.Doctor;
+import com.engineering.thesis.backend.model.Patient;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DoctorService {
-    void create(Doctor doctor);
+    Doctor create(Doctor doctor);
+    Doctor update(Doctor doctor);
     List<Doctor> selectAll();
     Doctor selectById(Long id);
-    Doctor selectByUserId(Long userId);
+    Optional<Doctor> selectByUserId(Long userId);
 }
