@@ -46,7 +46,7 @@ public class UserEPTests {
     }
 
     @Test
-    public void patientShouldNotBeAllowedToDeleteUsers() throws Exception {
+    public void patientShouldNotBeAllowedToDeactivateUsers() throws Exception {
         this.mockMvc
                 .perform(delete("/api/users/1").with(user("rob").roles("PATIENT")))
                 .andExpect(status().isForbidden());

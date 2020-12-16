@@ -22,14 +22,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
-import static com.engineering.thesis.backend.ControllerIntegrationTests.SecurityMockMvcRequestPostProcessors.Doctor;
-import static com.engineering.thesis.backend.ControllerIntegrationTests.SecurityMockMvcRequestPostProcessors.InvalidRole;
+import static com.engineering.thesis.backend.ControllerIntegrationTests.SecurityMockMvcRequestPostProcessors.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -69,7 +67,7 @@ class PriceEPTests {
                 .thenReturn(List.of(new Price(1L, "test",1000L),
                                     new Price(2L, "Consultation",500L)));
         this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/price/select").with(Doctor()))
+                .perform(MockMvcRequestBuilders.get("/api/price/select").with(DoctorRole()))
                 .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[1].treatment").value("Consultation"))
@@ -90,27 +88,35 @@ class PriceEPTests {
 
 
     @Test
-    public void selectByIdShouldReturnPrice() throws Exception {
+    public void selectByIdShouldReturnPriceWhenProperRoleIsSelected() throws Exception {
         final Long id = 1L;
         when(priceServiceImpl.selectPriceById(id)).thenReturn(java.util.Optional.of(new Price(1L, "Biopsy", 1000L)));
-
-        this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/price/select/1").with(Doctor()))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.treatment").value("Biopsy"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(1000));
-    }
-
-    @Test
-    public void selectByIdShouldNotReturnPriceDueToAuthorization() throws Exception {
-        final Long id = 1L;
-        when(priceServiceImpl.selectPriceById(id)).thenReturn(java.util.Optional.of(new Price(1L, "Biopsy", 1000L)));
-
-        this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/api/price/select/1").with(InvalidRole()))
-                .andDo(print())
-                .andExpect(status().isForbidden());
+        RulesMap().forEach((name, Role) -> {
+            try {
+                System.out.println("Performing Select price with role: " + name);
+                if(name=="Doctor"){
+                    this.mockMvc
+                            .perform(MockMvcRequestBuilders.get("/api/price/select/1").with(Role))
+                            .andExpect(status().isOk())
+                            .andExpect(MockMvcResultMatchers.jsonPath("$.treatment").value("Biopsy"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(1000));
+                }
+                if(name=="Patient"){
+                    this.mockMvc
+                            .perform(MockMvcRequestBuilders.get("/api/price/select/1").with(Role))
+                            .andExpect(status().isOk())
+                            .andExpect(MockMvcResultMatchers.jsonPath("$.treatment").value("Biopsy"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(1000));
+                }
+                if(name=="Invalid"){
+                    this.mockMvc
+                            .perform(MockMvcRequestBuilders.get("/api/price/select/1").with(Role))
+                            .andExpect(status().isForbidden());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Test
@@ -120,7 +126,7 @@ class PriceEPTests {
                         post("/api/price/create")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"id\": 1, \"treatment\":\"test\", \"cost\":1000}")
-                                .with(Doctor())
+                                .with(DoctorRole())
                 )
                 .andExpect(status().isOk());
         verify(priceServiceImpl).create(any(Price.class));
@@ -141,7 +147,7 @@ class PriceEPTests {
     @Test
     public void deletePriceShouldBePossible() throws Exception {
         this.mockMvc
-                .perform(delete("/api/price/delete/1").with(Doctor()))
+                .perform(delete("/api/price/delete/1").with(DoctorRole()))
                 .andExpect(status().isOk());
     }
 
@@ -159,7 +165,7 @@ class PriceEPTests {
                         put("/api/price/update")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content("{\"id\": 1, \"treatment\":\"test\", \"cost\":1000}")
-                                .with(Doctor())
+                                .with(DoctorRole())
                 )
                 .andExpect(status().isOk());
         verify(priceServiceImpl).update(any(Price.class));
