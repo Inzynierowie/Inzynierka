@@ -58,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     private void save(RegisterRequest signUpRequest, User user, UserRole userRole) {
-        user.setRole(userRole.getRole());
+        user.setRole(userRole.name());
         user.setName(signUpRequest.getName());
         user.setSurname(signUpRequest.getSurname());
         user.setEmail(signUpRequest.getEmail());
@@ -90,12 +90,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String jwt = jwtToken.generateJwtToken(authentication);
 
         User user = (User) authentication.getPrincipal();
+        String userRole = "ROLE_" + user.getRole();
         return ResponseEntity.ok(new JwtResponse(jwt,
                 user.getId(),
                 user.getName(),
                 user.getSurname(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getRole()));
+                userRole));
     }
 }
