@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.config.jwt;
 
 import com.engineering.thesis.backend.serviceImpl.user.UserDetailsServiceImpl;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +31,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (authorizationHeader.startsWith("Bearer ")) {
                 String jwt = authorizationHeader.substring(7);
                 try {
-                    if (!jwt.isBlank() && jwtToken.isTokenValid(jwt)) {
+                    if (!jwt.isBlank() && jwtToken.isTokenValid(jwt, request)) {
                         String userName = jwtToken.getUserNameFromJwtToken(jwt);
 
                         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
@@ -41,10 +40,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     }
-                } catch (IllegalArgumentException e) {
-                    log.error("Unable to get JWT Token: {}", e.getMessage());
-                } catch (ExpiredJwtException e) {
-                    log.error("JWT Token has expired: {}", e.getMessage());
                 } catch (Exception e) {
                     log.error("Cannot set user authentication: {}", e.getMessage());
                 }
