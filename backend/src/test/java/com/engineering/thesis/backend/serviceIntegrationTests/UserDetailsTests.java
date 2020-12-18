@@ -1,4 +1,4 @@
-package com.engineering.thesis.backend.ServiceIntegrationTests;
+package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.UserRepository;
@@ -29,9 +29,9 @@ public class UserDetailsTests {
 
     @Test
     void shouldThrowExceptionWhenTryLoadUserByEmail() {
-        final User user = new User(1l,"Tom","Kowalsky","dsaccdsa@osom.com","1I@wsdas","ROLE_DOCTOR",true);
+        final User user = new User(1l, "Tom", "Kowalsky", "dsaccdsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
         given(userService.findById(user.getId())).willReturn(Optional.of(user));
-        assertThrows(UsernameNotFoundException.class,() -> {
+        assertThrows(UsernameNotFoundException.class, () -> {
             userDetailsServiceImpl.loadUserByUsername(user.getEmail());
         });
         verify(userService, never()).save(any(User.class));

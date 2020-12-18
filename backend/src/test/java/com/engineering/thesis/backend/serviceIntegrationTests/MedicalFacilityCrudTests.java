@@ -1,8 +1,7 @@
-package com.engineering.thesis.backend.ServiceIntegrationTests;
+package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.MedicalFacility;
-import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.MedicalFacilityRepository;
 import com.engineering.thesis.backend.serviceImpl.MedicalFacilityServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -65,7 +64,7 @@ public class MedicalFacilityCrudTests {
     void shouldReturnSelectAll() {
         List<MedicalFacility> medicalFacilities = new ArrayList();
         medicalFacilities.add(new MedicalFacility(1L, "Test", "Somewhere",1L,1L,"123123123"));
-        medicalFacilities.add(new MedicalFacility(2L, "Test", "Somewhere",1L,1L,"123123123"));
+        medicalFacilities.add(new MedicalFacility(2L, "Test", "Somewhere", 1L, 1L, "123123123"));
         medicalFacilities.add(new MedicalFacility(3L, "Test", "Somewhere",1L,1L,"123123123"));
         given(medFacService.findAll()).willReturn(medicalFacilities);
         List<MedicalFacility> expected = medFacServiceImpl.selectAll();

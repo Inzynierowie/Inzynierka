@@ -1,4 +1,4 @@
-package com.engineering.thesis.backend.ServiceIntegrationTests;
+package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Patient;
@@ -20,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class PatientCruTests {
@@ -71,7 +72,7 @@ public class PatientCruTests {
         final User user3= new User(3l,"Tom","Kowalsky","wqeqeq@osom.com","1I@wsdasss","ROLE_PATIENT",true);
         List<Patient> patients = new ArrayList();
         patients.add(new Patient(1L, user1,true));
-        patients.add(new Patient(2L, user2,true));
+        patients.add(new Patient(2L, user2, true));
         patients.add(new Patient(3L, user3,true));
         given(patientService.findAll()).willReturn(patients);
         List<Patient> expected = patientServiceImpl.selectAll();

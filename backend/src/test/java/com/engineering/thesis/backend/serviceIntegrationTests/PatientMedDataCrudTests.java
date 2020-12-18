@@ -1,7 +1,10 @@
-package com.engineering.thesis.backend.ServiceIntegrationTests;
+package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
-import com.engineering.thesis.backend.model.*;
+import com.engineering.thesis.backend.model.Doctor;
+import com.engineering.thesis.backend.model.Patient;
+import com.engineering.thesis.backend.model.PatientMedicalData;
+import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.PatientMedicalDataRepository;
 import com.engineering.thesis.backend.serviceImpl.PatientMedicalDataServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -103,7 +106,7 @@ public class PatientMedDataCrudTests {
         final Doctor doctor = new Doctor(1l, userDoctor,"Cardiology");
         final User userPatient = new User(2l,"Tom","Kowalsky","dsadssssa@osom.com","1I@wsdas","ROLE_PATIENT",true);
         final Patient patient = new Patient(1l, userPatient,true);
-        final PatientMedicalData patientMedicalData = new PatientMedicalData(1L,patient,doctor,LocalDateTime.now(),"Biopsy","Funny patient LOL like him tho");
+        final PatientMedicalData patientMedicalData = new PatientMedicalData(1L, patient, doctor, LocalDateTime.now(), "Biopsy", "Funny patient LOL like him tho");
         given(patientMedDataService.findById(id)).willReturn(Optional.of(patientMedicalData));
         final Optional<PatientMedicalData> expected  = patientMedDataServiceImpl.selectPatientMedicalDataById(id);
         assertThat(expected).isNotNull();

@@ -1,4 +1,4 @@
-package com.engineering.thesis.backend.ControllerIntegrationTests;
+package com.engineering.thesis.backend.controllerIntegrationTests.role;
 
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
@@ -6,7 +6,7 @@ import java.util.Hashtable;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
-public class SecurityMockMvcRequestPostProcessors {
+public class RoleProcessors {
 
     public static RequestPostProcessor DoctorRole() {
         return user("Tom").roles("DOCTOR");

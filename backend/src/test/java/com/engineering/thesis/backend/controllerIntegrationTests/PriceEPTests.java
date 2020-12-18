@@ -1,69 +1,38 @@
-package com.engineering.thesis.backend.ControllerIntegrationTests;
+package com.engineering.thesis.backend.controllerIntegrationTests;
 
-import com.engineering.thesis.backend.config.jwt.JwtToken;
-import com.engineering.thesis.backend.config.jwt.UnauthorizedHandler;
 import com.engineering.thesis.backend.controller.PriceController;
+import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.serviceImpl.PriceServiceImpl;
-import com.engineering.thesis.backend.serviceImpl.user.UserDetailsServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
-import static com.engineering.thesis.backend.ControllerIntegrationTests.SecurityMockMvcRequestPostProcessors.RulesMap;
+import static com.engineering.thesis.backend.controllerIntegrationTests.role.RoleProcessors.RulesMap;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(value = PriceController.class)
-class PriceEPTests {
-
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext context;
-
-    @MockBean
-    private JwtToken jwtToken;
+class PriceEPTests extends MockConfiguration {
 
     @MockBean
     private PriceServiceImpl priceServiceImpl;
 
-    @MockBean
-    private UnauthorizedHandler unauthorizedHandler;
-
-    @MockBean
-    private UserDetailsServiceImpl userDetailsService;
-
-    @BeforeEach
-    public void setup() {
-        this.mockMvc = MockMvcBuilders
-                .webAppContextSetup(this.context)
-                .apply(springSecurity())
-                .build();
-    }
-
     @Test
-    public void selectAllPricesShouldReturnPriceWhenProperRoleIsSelected() throws Exception {
+    public void selectAllShouldReturnPricesWhenProperRoleIsSelected() throws Exception {
         when(priceServiceImpl.selectAll())
                 .thenReturn(List.of(
                         new Price(1L, "test",1000L),

@@ -1,4 +1,4 @@
-package com.engineering.thesis.backend.ServiceIntegrationTests;
+package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Doctor;
@@ -83,7 +83,7 @@ public class DoctorCruTests {
     void shouldFindDoctorById(){
         final Long id = 1L;
         final User user = new User(1l,"Tom","Kowalsky","dsw4w4adsa@osom.com","1I@wsdas","ROLE_DOCTOR",true);
-        final Doctor doctor = new Doctor(1L, user,"Cardiology");
+        final Doctor doctor = new Doctor(1L, user, "Cardiology");
         given(doctorService.findById(id)).willReturn(Optional.of(doctor));
         final Optional<Doctor> expected  = doctorServiceImpl.selectByUserId(id);
         assertThat(expected).isNotNull();
