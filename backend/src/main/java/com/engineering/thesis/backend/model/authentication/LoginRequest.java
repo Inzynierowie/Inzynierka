@@ -19,7 +19,6 @@ public class LoginRequest {
     @Size(max = 50, message = "Email can be up to 50 characters long")
     @Email(message = "Invalid email address")
     private String email;
-
     @NotBlank(message = "Password can't be empty")
     @Size(min = 6, max = 50, message = "Password should be 6 to 50 characters long")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$!%^*?&])[A-Za-z\\d@$!%*?&].*$",

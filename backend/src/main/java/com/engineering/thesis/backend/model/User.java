@@ -25,22 +25,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-
-    @NotBlank
+    @NotBlank(message = "Name can't be empty")
     private String name;
-
-    @NotBlank
+    @NotBlank(message = "Surname can't be empty")
     private String surname;
-
-    @NotBlank
+    @NotBlank(message = "Email can't be empty")
+    @Email(message = "Invalid email address")
     private String email;
-
-    @NotBlank
+    @NotBlank(message = "Password can't be empty")
     private String password;
-
-    @NotBlank
+    @NotBlank(message = "Role can't be empty")
     private String role;
-
     @Column(name = "is_active")
     private boolean isActive;
 
