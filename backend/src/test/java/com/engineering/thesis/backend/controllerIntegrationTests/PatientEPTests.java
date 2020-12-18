@@ -50,7 +50,6 @@ public class PatientEPTests extends MockConfiguration {
                 if (name == "Doctor" || name == "Patient") {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/patient/select").with(Role))
-                            .andDo(print())
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
                             .andExpect(MockMvcResultMatchers.jsonPath("$[1].insured").value(true))
