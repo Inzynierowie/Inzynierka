@@ -1,18 +1,20 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Data
-@Entity(name = "priceList")
-@Setter
-@Getter
-@NoArgsConstructor
+@Entity
+@Table(name = "priceList", schema = "healthcare")
+@Builder(toBuilder = true)
 @AllArgsConstructor
+@NoArgsConstructor
 public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

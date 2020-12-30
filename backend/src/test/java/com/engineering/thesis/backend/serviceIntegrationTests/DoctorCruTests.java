@@ -2,9 +2,9 @@ package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Doctor;
-import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.DoctorRepository;
 import com.engineering.thesis.backend.serviceImpl.DoctorServiceImpl;
+import com.engineering.thesis.backend.testObj.Doctors;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,64 +27,56 @@ import static org.mockito.Mockito.verify;
 public class DoctorCruTests {
 
     @Mock(lenient = true)
-    private DoctorRepository doctorService;
+    private DoctorRepository doctorRepository;
 
     @InjectMocks
     private DoctorServiceImpl doctorServiceImpl;
 
     @Test
     void shouldSavedDoctorSuccessFully() {
-        final User user = new User(1l,"Tom","Kowalsky","dsadzxxczsa@osom.com","1I@wsdas","ROLE_DOCTOR",true);
-        final Doctor doctor = new Doctor(null, user,"Cardiology");
-        given(doctorServiceImpl.selectByUserId(doctor.getId()))
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(doctorServiceImpl.selectByUserId(Doctors.doctorNull.getId()))
                 .willReturn(Optional.empty());
-        given(doctorService.save(doctor)).willAnswer(invocation -> invocation.getArgument(0));
-        Doctor savedUser = doctorService.save(doctor);
+        given(doctorRepository.save(Doctors.doctorNull)).willAnswer(invocation -> invocation.getArgument(0));
+        Doctor savedUser = doctorRepository.save(Doctors.doctorNull);
         assertThat(savedUser).isNotNull();
-        verify(doctorService).save(any(Doctor.class));
+        verify(doctorRepository).save(any(Doctor.class));
     }
 
     @Test
     void shouldThrowExceptionWhenSaveDoctorWithExistingID() {
-        final User user = new User(1l,"Tom","Kowalsky","dsaccdsa@osom.com","1I@wsdas","ROLE_DOCTOR",true);
-        final Doctor doctor = new Doctor(1L, user,"Cardiology");
-        given(doctorService.findById(doctor.getId())).willReturn(Optional.of(doctor));
-        assertThrows(CreateObjException.class,() -> {
-            doctorServiceImpl.create(doctor);
-        });
-        verify(doctorService, never()).save(any(Doctor.class));
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(doctorRepository.findById(Doctors.doctor1.getId())).willReturn(Optional.of(Doctors.doctor1));
+        assertThrows(CreateObjException.class,() -> doctorServiceImpl.create(Doctors.doctor1));
+        verify(doctorRepository, never()).save(any(Doctor.class));
     }
 
     @Test
     void shouldUpdateDoctor() {
-        final User user = new User(1l,"Tom","Kowalsky","dsaxxxdsa@osom.com","1I@wsdas","ROLE_DOCTOR",true);
-        final Doctor doctor = new Doctor(1L, user,"Cardiology");
-        given(doctorService.save(doctor)).willReturn(doctor);
-        final Doctor expected = doctorServiceImpl.update(doctor);
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(doctorRepository.save(Doctors.doctor1)).willReturn(Doctors.doctor1);
+        final Doctor expected = doctorServiceImpl.update(Doctors.doctor1);
         assertThat(expected).isNotNull();
-        verify(doctorService).save(any(Doctor.class));
+        verify(doctorRepository).save(any(Doctor.class));
     }
 
     @Test
     void shouldReturnSelectAll() {
-        final User user1 = new User(1l,"Tom","Kowalsky","dsadsadsadsa@osom.com","1I@wssssdddas","ROLE_DOCTOR",true);
-        final User user2 = new User(2l,"Tom","Kowalsky","dsaqqqdsadsa@osom.com","1I@wsaaadas","ROLE_DOCTOR",true);
-        final User user3= new User(3l,"Tom","Kowalsky","wqeeeeeqeq@osom.com","1I@wsdasss","ROLE_DOCTOR",true);
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         List<Doctor> doctors = new ArrayList();
-        doctors.add(new Doctor(1L, user1,"Cardiology"));
-        doctors.add(new Doctor(2L, user2,"Cardiology"));
-        doctors.add(new Doctor(3L, user3,"Cardiology"));
-        given(doctorService.findAll()).willReturn(doctors);
+        doctors.add(Doctors.doctor1);
+        doctors.add(Doctors.doctor2);
+        doctors.add(Doctors.doctor3);
+        given(doctorRepository.findAll()).willReturn(doctors);
         List<Doctor> expected = doctorServiceImpl.selectAll();
         assertEquals(expected, doctors);
     }
 
     @Test
     void shouldFindDoctorById(){
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
-        final User user = new User(1l,"Tom","Kowalsky","dsw4w4adsa@osom.com","1I@wsdas","ROLE_DOCTOR",true);
-        final Doctor doctor = new Doctor(1L, user, "Cardiology");
-        given(doctorService.findById(id)).willReturn(Optional.of(doctor));
+        given(doctorRepository.findById(id)).willReturn(Optional.of(Doctors.doctor1));
         final Optional<Doctor> expected  = doctorServiceImpl.selectByUserId(id);
         assertThat(expected).isNotNull();
     }

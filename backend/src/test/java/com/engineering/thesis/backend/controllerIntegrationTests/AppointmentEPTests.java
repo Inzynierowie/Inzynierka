@@ -3,10 +3,8 @@ package com.engineering.thesis.backend.controllerIntegrationTests;
 import com.engineering.thesis.backend.controller.AppointmentController;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
 import com.engineering.thesis.backend.model.Appointment;
-import com.engineering.thesis.backend.model.Doctor;
-import com.engineering.thesis.backend.model.Patient;
-import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.serviceImpl.AppointmentServiceImpl;
+import com.engineering.thesis.backend.testObj.Appointments;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -18,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.engineering.thesis.backend.controllerIntegrationTests.role.RoleProcessors.RulesMap;
@@ -33,82 +30,73 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AppointmentEPTests extends MockConfiguration {
 
     @MockBean
-    private AppointmentServiceImpl appointmentService;
+    private AppointmentServiceImpl appointmentServiceImpl;
 
     @Test
-    public void selectAllShouldReturnAppointmentWhenProperRoleIsSelected() throws Exception {
-        final User userDoctor1 = new User(1l, "Tom", "Kowalsky", "dsadzx1xczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final User userDoctor2 = new User(2l, "Tom", "Kowalsky", "dsadzx2xczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final Doctor doctor1 = new Doctor(1l, userDoctor1, "Cardiology");
-        final Doctor doctor2 = new Doctor(2l, userDoctor2, "Cardiology");
-        final User userPatient1 = new User(4l, "Tom", "Kowalsky", "dsad12ssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final User userPatient2 = new User(5l, "Tom", "Kowalsky", "dsad32ssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final Patient patient1 = new Patient(1l, userPatient1, true);
-        final Patient patient2 = new Patient(2l, userPatient2, true);
-        when(appointmentService.selectAll())
-                .thenReturn(List.of(
-                        new Appointment(1l, patient1, doctor1, 1000L, LocalDateTime.now()),
-                        new Appointment(2l, patient2, doctor2, 2000, LocalDateTime.now())
-                ));
+    public void selectAllShouldReturnAppointmentWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        when(appointmentServiceImpl.selectAll()).thenReturn(List.of(Appointments.appointment1, Appointments.appointment2));
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing select appointment with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/appointment/select").with(Role))
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
-                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].cost").value(2000))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].cost").value(1000))
                             .andExpect(MockMvcResultMatchers.jsonPath("$[0].cost").value(1000));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/appointment/select").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void selectByIdShouldReturnAppointmentWhenProperRoleIsSelected() throws Exception {
-        final User userDoctor1 = new User(1l, "Tom", "Kowalsky", "dsadzx1xczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final Doctor doctor1 = new Doctor(1l, userDoctor1, "Cardiology");
-        final User userPatient1 = new User(2l, "Tom", "Kowalsky", "dsad12ssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final Patient patient1 = new Patient(1l, userPatient1, true);
+    public void selectByIdShouldReturnAppointmentWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
-        when(appointmentService.selectAppointmentById(id))
-                .thenReturn(java.util.Optional.of(
-                        new Appointment(1l, patient1, doctor1, 1000L, LocalDateTime.now())));
+        when(appointmentServiceImpl.selectAppointmentById(id)).thenReturn(java.util.Optional.of(Appointments.appointment1));
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing selectById appointment with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/appointment/select/1").with(Role))
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.cost").value(1000))
                             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/appointment/select/1").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void createAppointmentShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void createAppointmentShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing create appointment with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(
                                     post("/api/appointment/create")
@@ -117,9 +105,11 @@ class AppointmentEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isOk());
-                    verify(appointmentService, atLeast(1)).create(any(Appointment.class));
+                    verify(appointmentServiceImpl, atLeast(1)).create(any(Appointment.class));
+                    System.out.println("All data received properly as expected \n");
+
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(
                                     post("/api/appointment/create")
@@ -128,40 +118,47 @@ class AppointmentEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void deleteAppointmentShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void deleteAppointmentShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing delete appointment with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(delete("/api/appointment/delete/1").with(Role))
                             .andExpect(status().isOk());
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(delete("/api/appointment/delete/1").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void updateAppointmentShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void updateAppointmentShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing update appointment with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(
                                     put("/api/appointment/update")
@@ -170,9 +167,10 @@ class AppointmentEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isOk());
-                    verify(appointmentService, atLeast(1)).update(any(Appointment.class));
+                    verify(appointmentServiceImpl, atLeast(1)).update(any(Appointment.class));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(
                                     put("/api/appointment/update")
@@ -181,11 +179,12 @@ class AppointmentEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
-
 }

@@ -7,8 +7,12 @@ import java.util.Optional;
 
 public interface AppointmentService {
     Appointment create(Appointment appointment);
+
     Appointment update(Appointment appointment);
-    void deleteById(Long id);
+
+    Long deleteById(Long id);
+
     List<Appointment> selectAll();
+
     Optional<Appointment> selectAppointmentById(Long id);
 }

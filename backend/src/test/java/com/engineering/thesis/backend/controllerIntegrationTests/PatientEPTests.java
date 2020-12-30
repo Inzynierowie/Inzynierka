@@ -1,12 +1,12 @@
 package com.engineering.thesis.backend.controllerIntegrationTests;
 
-//We ned to check later why we can't use PriceController directly (only wild card works).
+//TODO: We ned to check later why we can't use PriceController directly (only wild card works).
 
 import com.engineering.thesis.backend.controller.*;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
 import com.engineering.thesis.backend.model.Patient;
-import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.serviceImpl.PatientServiceImpl;
+import com.engineering.thesis.backend.testObj.Patients;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -24,7 +24,6 @@ import static com.engineering.thesis.backend.controllerIntegrationTests.role.Rol
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -33,72 +32,73 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PatientEPTests extends MockConfiguration {
 
     @MockBean
-    private PatientServiceImpl patientService;
+    private PatientServiceImpl patientServiceImpl;
 
     @Test
-    public void selectAllShouldReturnPatientsWhenProperRoleIsSelected() throws Exception {
-        final User user1 = new User(1l, "Tom", "Kowalsky", "dsadsa@osom.com", "1I@wssssdddas", "ROLE_PATIENT", true);
-        final User user2 = new User(2l, "Tom", "Kowalsky", "dsadsadsa@osom.com", "1I@wsaaadas", "ROLE_PATIENT", true);
-        when(patientService.selectAll())
-                .thenReturn(List.of(
-                        new Patient(1L, user1, true),
-                        new Patient(2L, user2, true)
-                ));
+    public void selectAllShouldReturnPatientsWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        when(patientServiceImpl.selectAll()).thenReturn(List.of(Patients.patient1, Patients.patient2));
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing select patient with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/patient/select").with(Role))
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
                             .andExpect(MockMvcResultMatchers.jsonPath("$[1].insured").value(true))
                             .andExpect(MockMvcResultMatchers.jsonPath("$[0].insured").value(true));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/patient/select").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void selectByIdShouldReturnPatientWhenProperRoleIsSelected() throws Exception {
+    public void selectByIdShouldReturnPatientWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
-        final User user1 = new User(1l, "Tom", "Kowalsky", "dsadsa@osom.com", "1I@wssssdddas", "ROLE_PATIENT", true);
-        when(patientService.selectById(id))
-                .thenReturn(new Patient(1L, user1, true));
+        when(patientServiceImpl.selectById(id)).thenReturn(Patients.patient1);
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing selectById patient with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/patient/select/1").with(Role)
                                     .accept(MediaType.APPLICATION_JSON))
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.insured").value(true));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/patient/select/1").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void updatePatientShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void updatePatientShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing update patient with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(
                                     put("/api/patient/update")
@@ -107,9 +107,10 @@ public class PatientEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isOk());
-                    verify(patientService, atLeast(1)).update(any(Patient.class));
+                    verify(patientServiceImpl, atLeast(1)).update(any(Patient.class));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(
                                     put("/api/patient/update")
@@ -118,8 +119,10 @@ public class PatientEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });

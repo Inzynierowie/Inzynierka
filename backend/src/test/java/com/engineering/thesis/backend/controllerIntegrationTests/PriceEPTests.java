@@ -4,6 +4,7 @@ import com.engineering.thesis.backend.controller.PriceController;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.serviceImpl.PriceServiceImpl;
+import com.engineering.thesis.backend.testObj.Prices;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -32,69 +33,72 @@ class PriceEPTests extends MockConfiguration {
     private PriceServiceImpl priceServiceImpl;
 
     @Test
-    public void selectAllShouldReturnPricesWhenProperRoleIsSelected() throws Exception {
-        when(priceServiceImpl.selectAll())
-                .thenReturn(List.of(
-                        new Price(1L, "test",1000L),
-                        new Price(2L, "Consultation",500L)
-                ));
+    public void selectAllShouldReturnPricesWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        when(priceServiceImpl.selectAll()).thenReturn(List.of(Prices.price1, Prices.price2));
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing select price with role: " + name);
-                if(name=="Doctor" || name=="Patient"){
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/price/select").with(Role))
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
-                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].treatment").value("Consultation"))
-                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].price").value(500))
-                            .andExpect(MockMvcResultMatchers.jsonPath("$[0].treatment").value("test"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].treatment").value("Biopsy"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].price").value(1000))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$[0].treatment").value("Biopsy"))
                             .andExpect(MockMvcResultMatchers.jsonPath("$[0].price").value(1000));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if(name=="Invalid"){
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/price/select").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void selectByIdShouldReturnPriceWhenProperRoleIsSelected() throws Exception {
+    public void selectByIdShouldReturnPriceWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
-        when(priceServiceImpl.selectPriceById(id))
-                .thenReturn(java.util.Optional.of(
-                        new Price(1L, "Biopsy", 1000L)));
+        when(priceServiceImpl.selectPriceById(id)).thenReturn(java.util.Optional.of(Prices.price1));
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing selectById price with role: " + name);
-                if(name=="Doctor" || name=="Patient"){
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/price/select/1").with(Role))
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.treatment").value("Biopsy"))
                             .andExpect(MockMvcResultMatchers.jsonPath("$.price").value(1000));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if(name=="Invalid"){
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/price/select/1").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void createPriceShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void createPriceShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing create price with role: " + name);
-                if(name=="Doctor" || name=="Patient"){
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(
                                     post("/api/price/create")
@@ -104,8 +108,9 @@ class PriceEPTests extends MockConfiguration {
                             )
                             .andExpect(status().isOk());
                     verify(priceServiceImpl, atLeast(1)).create(any(Price.class));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if(name=="Invalid"){
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(
                                     post("/api/price/create")
@@ -114,40 +119,47 @@ class PriceEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void deletePriceShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void deletePriceShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing delete price with role: " + name);
-                if(name=="Doctor" || name=="Patient"){
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(delete("/api/price/delete/1").with(Role))
                             .andExpect(status().isOk());
+                    System.out.println("All data received properly as expected \n");
                 }
-                if(name=="Invalid"){
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(delete("/api/price/delete/1").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void updatePriceShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void updatePriceShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing update price with role: " + name);
-                if(name=="Doctor" || name=="Patient"){
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(
                                     put("/api/price/update")
@@ -157,8 +169,9 @@ class PriceEPTests extends MockConfiguration {
                             )
                             .andExpect(status().isOk());
                     verify(priceServiceImpl, atLeast(1)).update(any(Price.class));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if(name=="Invalid"){
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(
                                     put("/api/price/update")
@@ -167,8 +180,10 @@ class PriceEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests \n");
                 e.printStackTrace();
             }
         });

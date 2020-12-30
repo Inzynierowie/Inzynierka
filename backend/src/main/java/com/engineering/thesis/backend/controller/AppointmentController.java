@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.controller;
 
 import com.engineering.thesis.backend.model.Appointment;
-import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,8 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public Long deleteById(@PathVariable Long id) {
         appointmentService.deleteById(id);
+        return id;
     }
 }

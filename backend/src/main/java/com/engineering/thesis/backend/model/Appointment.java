@@ -1,6 +1,9 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -8,11 +11,11 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-@Entity(name = "appointments")
-@Setter
-@Getter
-@NoArgsConstructor
+@Entity
+@Table(name = "appointments", schema = "healthcare")
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

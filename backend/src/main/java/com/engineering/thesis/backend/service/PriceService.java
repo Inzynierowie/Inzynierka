@@ -7,8 +7,12 @@ import java.util.Optional;
 
 public interface PriceService {
     Price create(Price price);
+
     Price update(Price price);
-    void deleteById(Long id);
+
+    Long deleteById(Long id);
+
     List<Price> selectAll();
+
     Optional<Price> selectPriceById(Long id);
 }

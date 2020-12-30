@@ -2,7 +2,6 @@ package com.engineering.thesis.backend.serviceImpl;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
 import com.engineering.thesis.backend.model.Doctor;
-import com.engineering.thesis.backend.model.Patient;
 import com.engineering.thesis.backend.repository.DoctorRepository;
 import com.engineering.thesis.backend.service.DoctorService;
 import lombok.RequiredArgsConstructor;

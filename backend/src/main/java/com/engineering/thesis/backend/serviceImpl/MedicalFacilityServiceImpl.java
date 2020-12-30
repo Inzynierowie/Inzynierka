@@ -1,8 +1,8 @@
 package com.engineering.thesis.backend.serviceImpl;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
+import com.engineering.thesis.backend.exception.DeleteObjException;
 import com.engineering.thesis.backend.model.MedicalFacility;
-import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.MedicalFacilityRepository;
 import com.engineering.thesis.backend.service.MedicalFacilityService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService {
     @Override
     public MedicalFacility create(MedicalFacility medicalFacility) {
         Optional<MedicalFacility> medFacOptional = medicalFacilityRepository.findById(medicalFacility.getId());
-        if(medFacOptional.isPresent()) {
-            throw new CreateObjException("Medical Facility with Id "+ medicalFacility.getId()+" already exists");
+        if (medFacOptional.isPresent()) {
+            throw new CreateObjException("Medical Facility with Id " + medicalFacility.getId() + " already exists");
         }
         return medicalFacilityRepository.save(medicalFacility);
     }
@@ -31,8 +31,13 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public Long deleteById(Long id) {
+        Optional<MedicalFacility> priceOptional = medicalFacilityRepository.findById(id);
+        if (priceOptional.isEmpty()) {
+            throw new DeleteObjException("MedicalFacility with Id " + id + " don't exists");
+        }
         medicalFacilityRepository.deleteById(id);
+        return id;
     }
 
     @Override

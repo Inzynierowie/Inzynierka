@@ -1,8 +1,6 @@
 package com.engineering.thesis.backend.model.authentication;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -12,8 +10,6 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class LoginRequest {
     @NotBlank(message = "Email can't be empty")
     @Size(max = 50, message = "Email can be up to 50 characters long")

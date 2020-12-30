@@ -35,7 +35,8 @@ public class MedicalFacilityController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public Long deleteById(@PathVariable Long id) {
         medicalFacilityService.deleteById(id);
+        return id;
     }
 }

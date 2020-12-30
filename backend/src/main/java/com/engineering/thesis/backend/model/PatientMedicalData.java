@@ -1,19 +1,21 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-@Entity(name = "patientsMedData")
-@Setter
-@Getter
-@NoArgsConstructor
+@Entity
+@Table(name = "patientsMedData", schema = "healthcare")
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class PatientMedicalData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

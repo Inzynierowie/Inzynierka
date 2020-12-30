@@ -1,6 +1,7 @@
 package com.engineering.thesis.backend.serviceImpl;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
+import com.engineering.thesis.backend.exception.DeleteObjException;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.PriceRepository;
 import com.engineering.thesis.backend.service.PriceService;
@@ -18,8 +19,8 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public Price create(Price price) {
         Optional<Price> priceOptional = priceRepository.findById(price.getId());
-        if(priceOptional.isPresent()) {
-            throw new CreateObjException("Price with Id "+ price.getId()+" already exists");
+        if (priceOptional.isPresent()) {
+            throw new CreateObjException("Price with Id " + price.getId() + " already exists");
         }
         return priceRepository.save(price);
     }
@@ -30,8 +31,13 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public Long deleteById(Long id) {
+        Optional<Price> priceOptional = priceRepository.findById(id);
+        if (priceOptional.isEmpty()) {
+            throw new DeleteObjException("Price with Id " + id + " don't exists");
+        }
         priceRepository.deleteById(id);
+        return id;
     }
 
     @Override

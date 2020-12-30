@@ -1,10 +1,8 @@
 package com.engineering.thesis.backend.controller;
 
-import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.service.PatientMedicalDataService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +35,8 @@ public class PatientMedicalDataController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteById(@PathVariable Long id) {
+    public Long deleteById(@PathVariable Long id) {
         patientMedicalDataService.deleteById(id);
+        return id;
     }
 }

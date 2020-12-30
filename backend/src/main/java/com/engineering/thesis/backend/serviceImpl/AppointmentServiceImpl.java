@@ -1,8 +1,8 @@
 package com.engineering.thesis.backend.serviceImpl;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
+import com.engineering.thesis.backend.exception.DeleteObjException;
 import com.engineering.thesis.backend.model.Appointment;
-import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.repository.AppointmentRepository;
 import com.engineering.thesis.backend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +19,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment create(Appointment appointment) {
         Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointment.getId());
-        if(appointmentOptional.isPresent()) {
-            throw new CreateObjException("Appointment with Id "+ appointment.getId()+" already exists");
+        if (appointmentOptional.isPresent()) {
+            throw new CreateObjException("Appointment with Id " + appointment.getId() + " already exists");
         }
         return appointmentRepository.save(appointment);
     }
@@ -31,8 +31,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public Long deleteById(Long id) {
+        Optional<Appointment> priceOptional = appointmentRepository.findById(id);
+        if (priceOptional.isEmpty()) {
+            throw new DeleteObjException("Appointment with Id " + id + " don't exists");
+        }
         appointmentRepository.deleteById(id);
+        return id;
     }
 
     @Override

@@ -1,19 +1,17 @@
 package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
+import com.engineering.thesis.backend.exception.DeleteObjException;
 import com.engineering.thesis.backend.model.Appointment;
-import com.engineering.thesis.backend.model.Doctor;
-import com.engineering.thesis.backend.model.Patient;
-import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.AppointmentRepository;
 import com.engineering.thesis.backend.serviceImpl.AppointmentServiceImpl;
+import com.engineering.thesis.backend.testObj.Appointments;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,101 +21,71 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class AppointmentCrudTests {
 
     @Mock(lenient = true)
-    private AppointmentRepository appointmentService;
+    private AppointmentRepository appointmentRepository;
 
     @InjectMocks
     private AppointmentServiceImpl appointmentServiceImpl;
 
     @Test
     void shouldSavedAppointmentSuccessFully() {
-        final User userDoctor = new User(1l, "Tom", "Kowalsky", "dsadzxxczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final Doctor doctor = new Doctor(1l, userDoctor, "Cardiology");
-        final User userPatient = new User(2l, "Tom", "Kowalsky", "dsadssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final Patient patient = new Patient(1l, userPatient, true);
-        final Appointment appointment = new Appointment(null, patient, doctor, 1000L, LocalDateTime.now());
-        given(appointmentServiceImpl.selectAppointmentById(appointment.getId()))
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(appointmentServiceImpl.selectAppointmentById(Appointments.appointmentNull.getId()))
                 .willReturn(Optional.empty());
-        given(appointmentService.save(appointment)).willAnswer(invocation -> invocation.getArgument(0));
-        Appointment savedMedFac = appointmentService.save(appointment);
+        given(appointmentRepository.save(Appointments.appointmentNull)).willAnswer(invocation -> invocation.getArgument(0));
+        Appointment savedMedFac = appointmentRepository.save(Appointments.appointmentNull);
         assertThat(savedMedFac).isNotNull();
-        verify(appointmentService).save(any(Appointment.class));
+        verify(appointmentRepository).save(any(Appointment.class));
     }
 
     @Test
     void shouldThrowExceptionWhenSaveAppointmentWithExistingID() {
-        final User userDoctor = new User(1l, "Tom", "Kowalsky", "dsadzxxczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final Doctor doctor = new Doctor(1l, userDoctor, "Cardiology");
-        final User userPatient = new User(2l, "Tom", "Kowalsky", "dsadssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final Patient patient = new Patient(1l, userPatient, true);
-        final Appointment appointment = new Appointment(1l, patient, doctor, 1000L, LocalDateTime.now());
-        given(appointmentService.findById(appointment.getId())).willReturn(Optional.of(appointment));
-        assertThrows(CreateObjException.class, () -> {
-            appointmentServiceImpl.create(appointment);
-        });
-        verify(appointmentService, never()).save(any(Appointment.class));
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(appointmentRepository.findById(Appointments.appointment1.getId())).willReturn(Optional.of(Appointments.appointment1));
+        assertThrows(CreateObjException.class, () -> appointmentServiceImpl.create(Appointments.appointment1));
+        verify(appointmentRepository, never()).save(any(Appointment.class));
     }
 
     @Test
     void shouldUpdateAppointment() {
-        final User userDoctor = new User(1l, "Tom", "Kowalsky", "dsadzxxczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final Doctor doctor = new Doctor(null, userDoctor, "Cardiology");
-        final User userPatient = new User(2l, "Tom", "Kowalsky", "dsadssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final Patient patient = new Patient(null, userPatient, true);
-        final Appointment appointment = new Appointment(1l, patient, doctor, 1000L, LocalDateTime.now());
-        given(appointmentService.save(appointment)).willReturn(appointment);
-        final Appointment expected = appointmentServiceImpl.update(appointment);
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(appointmentRepository.save(Appointments.appointment1)).willReturn(Appointments.appointment1);
+        final Appointment expected = appointmentServiceImpl.update(Appointments.appointment1);
         assertThat(expected).isNotNull();
-        verify(appointmentService).save(any(Appointment.class));
+        verify(appointmentRepository).save(any(Appointment.class));
     }
 
     @Test
     void shouldReturnSelectAll() {
-        final User userDoctor1 = new User(1l, "Tom", "Kowalsky", "dsadzx1xczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final User userDoctor2 = new User(2l, "Tom", "Kowalsky", "dsadzx2xczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final User userDoctor3 = new User(3l, "Tom", "Kowalsky", "dsadzx3xczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final Doctor doctor1 = new Doctor(1l, userDoctor1, "Cardiology");
-        final Doctor doctor2 = new Doctor(2l, userDoctor2, "Cardiology");
-        final Doctor doctor3 = new Doctor(3l, userDoctor3, "Cardiology");
-        final User userPatient1 = new User(4l, "Tom", "Kowalsky", "dsad12ssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final User userPatient2 = new User(5l, "Tom", "Kowalsky", "dsad32ssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final User userPatient3 = new User(6l, "Tom", "Kowalsky", "2122asdadsa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final Patient patient1 = new Patient(1l, userPatient1, true);
-        final Patient patient2 = new Patient(2l, userPatient2, true);
-        final Patient patient3 = new Patient(3l, userPatient3, true);
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         List<Appointment> appointments = new ArrayList();
-        appointments.add(new Appointment(1l, patient1, doctor1, 1000L, LocalDateTime.now()));
-        appointments.add(new Appointment(2l, patient2, doctor2, 1000L, LocalDateTime.now()));
-        appointments.add(new Appointment(3l, patient3, doctor3, 1000L, LocalDateTime.now()));
-        given(appointmentService.findAll()).willReturn(appointments);
+        appointments.add(Appointments.appointment1);
+        appointments.add(Appointments.appointment2);
+        appointments.add(Appointments.appointment3);
+        given(appointmentRepository.findAll()).willReturn(appointments);
         List<Appointment> expected = appointmentServiceImpl.selectAll();
         assertEquals(expected, appointments);
     }
 
     @Test
     void shouldFindAppointmentById() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
-        final User userDoctor = new User(1l, "Tom", "Kowalsky", "dsadzxxczsa@osom.com", "1I@wsdas", "ROLE_DOCTOR", true);
-        final Doctor doctor = new Doctor(null, userDoctor, "Cardiology");
-        final User userPatient = new User(2l, "Tom", "Kowalsky", "dsadssssa@osom.com", "1I@wsdas", "ROLE_PATIENT", true);
-        final Patient patient = new Patient(null, userPatient, true);
-        final Appointment appointment = new Appointment(1l, patient, doctor, 1000L, LocalDateTime.now());
-        given(appointmentService.findById(id)).willReturn(Optional.of(appointment));
+        given(appointmentRepository.findById(id)).willReturn(Optional.of(Appointments.appointment1));
         final Optional<Appointment> expected = appointmentServiceImpl.selectAppointmentById(id);
         assertThat(expected).isNotNull();
     }
 
     @Test
-    void shouldBeDelete() {
-        final Long appointmentId = 1L;
-        appointmentServiceImpl.deleteById(appointmentId);
-        appointmentServiceImpl.deleteById(appointmentId);
-        verify(appointmentService, times(2)).deleteById(appointmentId);
+    void shouldThrowExceptionWhenDeleteWithNonexistentID() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        assertThrows(DeleteObjException.class, () -> appointmentServiceImpl.deleteById(Appointments.appointment1.getId()));
+        verify(appointmentRepository, never()).deleteById(Appointments.appointment1.getId());
     }
-
 }

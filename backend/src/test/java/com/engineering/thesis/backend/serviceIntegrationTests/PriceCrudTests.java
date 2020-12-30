@@ -1,9 +1,11 @@
 package com.engineering.thesis.backend.serviceIntegrationTests;
 
 import com.engineering.thesis.backend.exception.CreateObjException;
+import com.engineering.thesis.backend.exception.DeleteObjException;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.repository.PriceRepository;
 import com.engineering.thesis.backend.serviceImpl.PriceServiceImpl;
+import com.engineering.thesis.backend.testObj.Prices;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,66 +27,64 @@ import static org.mockito.Mockito.*;
 public class PriceCrudTests {
 
     @Mock(lenient = true)
-    private PriceRepository priceService;
+    private PriceRepository priceRepository;
 
     @InjectMocks
     private PriceServiceImpl priceServiceImpl;
 
     @Test
     void shouldSavedPriceSuccessFully() {
-        final Price price = new Price(null, "Testing", 1000l);
-        given(priceServiceImpl.selectPriceById(price.getId()))
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(priceServiceImpl.selectPriceById(Prices.priceNull.getId()))
                 .willReturn(Optional.empty());
-        given(priceService.save(price)).willAnswer(invocation -> invocation.getArgument(0));
-        Price savedPrice = priceService.save(price);
+        given(priceRepository.save(Prices.priceNull)).willAnswer(invocation -> invocation.getArgument(0));
+        Price savedPrice = priceRepository.save(Prices.priceNull);
         assertThat(savedPrice).isNotNull();
-        verify(priceService).save(any(Price.class));
+        verify(priceRepository).save(any(Price.class));
     }
 
     @Test
     void shouldThrowExceptionWhenSavePriceWithExistingID() {
-        final Price price = new Price(1L, "Testing", 1000l);
-        given(priceService.findById(price.getId())).willReturn(Optional.of(price));
-        assertThrows(CreateObjException.class, () -> {
-            priceServiceImpl.create(price);
-        });
-        verify(priceService, never()).save(any(Price.class));
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(priceRepository.findById(Prices.price1.getId())).willReturn(Optional.of(Prices.price1));
+        assertThrows(CreateObjException.class, () -> priceServiceImpl.create(Prices.price1));
+        verify(priceRepository, never()).save(any(Price.class));
     }
 
     @Test
     void shouldUpdatePrice() {
-        final Price price = new Price(1L, "Testing", 1000l);
-        given(priceService.save(price)).willReturn(price);
-        final Price expected = priceServiceImpl.update(price);
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        given(priceRepository.save(Prices.price1)).willReturn(Prices.price1);
+        final Price expected = priceServiceImpl.update(Prices.price1);
         assertThat(expected).isNotNull();
-        verify(priceService).save(any(Price.class));
+        verify(priceRepository).save(any(Price.class));
     }
 
     @Test
     void shouldReturnSelectAll() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         List<Price> prices = new ArrayList();
-        prices.add(new Price(1L, "Testing", 1000l));
-        prices.add(new Price(2L, "Testing", 1000l));
-        prices.add(new Price(3L, "Testing", 1000l));
-        given(priceService.findAll()).willReturn(prices);
+        prices.add(Prices.price1);
+        prices.add(Prices.price2);
+        prices.add(Prices.price3);
+        given(priceRepository.findAll()).willReturn(prices);
         List<Price> expected = priceServiceImpl.selectAll();
         assertEquals(expected, prices);
     }
 
     @Test
     void shouldFindPriceById() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
-        final Price price = new Price(1L, "Testing", 1000l);
-        given(priceService.findById(id)).willReturn(Optional.of(price));
+        given(priceRepository.findById(id)).willReturn(Optional.of(Prices.price1));
         final Optional<Price> expected = priceServiceImpl.selectPriceById(id);
         assertThat(expected).isNotNull();
     }
 
     @Test
-    void shouldBeDelete() {
-        final Long priceId = 1L;
-        priceServiceImpl.deleteById(priceId);
-        priceServiceImpl.deleteById(priceId);
-        verify(priceService, times(2)).deleteById(priceId);
+    void shouldThrowExceptionWhenDeleteWithNonexistentID() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        assertThrows(DeleteObjException.class, () -> priceServiceImpl.deleteById(Prices.price1.getId()));
+        verify(priceRepository, never()).deleteById(Prices.price1.getId());
     }
 }

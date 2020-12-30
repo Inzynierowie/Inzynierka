@@ -38,10 +38,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public ResponseEntity<?> register(RegisterRequest signUpRequest) {
         User user = new User();
-        if (userRepository.existsByEmailAndIsActive(signUpRequest.getEmail(),true)) {
-                return ResponseEntity
-                        .badRequest()
-                        .body("Error: Email is already in use!");
+        if (userRepository.existsByEmailAndIsActive(signUpRequest.getEmail(), true)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Email is already in use!");
         }
 
         if (signUpRequest.getRole().isBlank()) {

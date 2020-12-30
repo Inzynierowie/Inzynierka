@@ -1,15 +1,17 @@
 package com.engineering.thesis.backend.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-@Entity(name = "patients")
-@Setter
-@Getter
+@Entity
+@Table(name = "patients", schema = "healthcare")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient {
@@ -18,7 +20,7 @@ public class Patient {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_user") )
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "Fk_user"))
     @NotNull(message = "User can't be empty")
     private User user;
     @Column(name = "insured")

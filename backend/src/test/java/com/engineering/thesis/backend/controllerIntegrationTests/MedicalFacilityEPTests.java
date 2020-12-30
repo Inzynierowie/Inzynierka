@@ -4,6 +4,7 @@ import com.engineering.thesis.backend.controller.MedicalFacilityController;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
 import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.serviceImpl.MedicalFacilityServiceImpl;
+import com.engineering.thesis.backend.testObj.MedicalFacilities;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
@@ -29,72 +30,75 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class MedicalFacilityEPTests extends MockConfiguration {
 
     @MockBean
-    private MedicalFacilityServiceImpl medicalFacilityService;
+    private MedicalFacilityServiceImpl medicalFacilityServiceImpl;
 
     @Test
-    public void selectAllShouldReturnMedicalFacilitiesWhenProperRoleIsSelected() throws Exception {
-        when(medicalFacilityService.selectAll())
-                .thenReturn(List.of(
-                        new MedicalFacility(1L, "San", "Somewhere", 1L, 1L, "123123123"),
-                        new MedicalFacility(2L, "Andreas", "Nowhere", 1L, 1L, "123123123")
-                ));
+    public void selectAllShouldReturnMedicalFacilitiesWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
+        when(medicalFacilityServiceImpl.selectAll()).thenReturn(List.of(MedicalFacilities.medicalFacility1, MedicalFacilities.medicalFacility2));
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing select medical facility with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/medicalFacility/select").with(Role))
                             .andExpect(status().isOk())
                             .andExpect(MockMvcResultMatchers.jsonPath("$.size()").value(2))
-                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Andreas"))
-                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].localization").value("Nowhere"))
-                            .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("San"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].name").value("Test"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$[1].localization").value("Somewhere"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Test"))
                             .andExpect(MockMvcResultMatchers.jsonPath("$[0].localization").value("Somewhere"));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/medicalFacility/select").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void selectByIdShouldReturnMedicalFacilitiesWhenProperRoleIsSelected() throws Exception {
+    public void selectByIdShouldReturnMedicalFacilitiesWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
-        when(medicalFacilityService.selectMedicalFacilityById(id))
-                .thenReturn(java.util.Optional.of(
-                        new MedicalFacility(1L, "San", "Somewhere", 1L, 1L, "123123123")));
+        when(medicalFacilityServiceImpl.selectMedicalFacilityById(id)).thenReturn(java.util.Optional.of(MedicalFacilities.medicalFacility1));
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing selectById price with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/medicalFacility/select/1").with(Role))
                             .andExpect(status().isOk())
-                            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("San"))
+                            .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Test"))
                             .andExpect(MockMvcResultMatchers.jsonPath("$.localization").value("Somewhere"));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(MockMvcRequestBuilders.get("/api/api/medicalFacility/1").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void createMedicalFacilitiesShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void createMedicalFacilitiesShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing create medical facility with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(
                                     post("/api/medicalFacility/create")
@@ -103,9 +107,10 @@ public class MedicalFacilityEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isOk());
-                    verify(medicalFacilityService, atLeast(1)).create(any(MedicalFacility.class));
+                    verify(medicalFacilityServiceImpl, atLeast(1)).create(any(MedicalFacility.class));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(
                                     post("/api/medicalFacility/create")
@@ -114,40 +119,47 @@ public class MedicalFacilityEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void deleteMedicalFacilitiesShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void deleteMedicalFacilitiesShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing delete medical facility with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(delete("/api/medicalFacility/delete/1").with(Role))
                             .andExpect(status().isOk());
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(delete("/api/medicalFacility/delete/1").with(Role))
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
 
     @Test
-    public void updateMedicalFacilitiesShouldBePossibleWhenProperRoleIsSelected() throws Exception {
+    public void updateMedicalFacilitiesShouldBePossibleWhenProperRoleIsSelected() {
+        System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         RulesMap().forEach((name, Role) -> {
             try {
                 System.out.println("Performing update medical facility with role: " + name);
-                if (name == "Doctor" || name == "Patient") {
+                if (name.equals("Doctor") || name.equals("Patient")) {
                     this.mockMvc
                             .perform(
                                     put("/api/medicalFacility/update")
@@ -156,9 +168,10 @@ public class MedicalFacilityEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isOk());
-                    verify(medicalFacilityService, atLeast(1)).update(any(MedicalFacility.class));
+                    verify(medicalFacilityServiceImpl, atLeast(1)).update(any(MedicalFacility.class));
+                    System.out.println("All data received properly as expected \n");
                 }
-                if (name == "Invalid") {
+                if (name.equals("Invalid")) {
                     this.mockMvc
                             .perform(
                                     put("/api/medicalFacility/update")
@@ -167,11 +180,12 @@ public class MedicalFacilityEPTests extends MockConfiguration {
                                             .with(Role)
                             )
                             .andExpect(status().isForbidden());
+                    System.out.println("Forbidden status for invalid role as expected \n");
                 }
             } catch (Exception e) {
+                System.out.println("Unexpected exception during tests: \n");
                 e.printStackTrace();
             }
         });
     }
-
 }
