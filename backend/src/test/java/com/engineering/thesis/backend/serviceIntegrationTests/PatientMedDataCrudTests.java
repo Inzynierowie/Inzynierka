@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.serviceIntegrationTests;
 
-import com.engineering.thesis.backend.exception.CreateObjException;
-import com.engineering.thesis.backend.exception.DeleteObjException;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.repository.PatientMedicalDataRepository;
 import com.engineering.thesis.backend.serviceImpl.PatientMedicalDataServiceImpl;
@@ -21,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class PatientMedDataCrudTests {
@@ -35,11 +35,9 @@ public class PatientMedDataCrudTests {
     @Test
     void shouldSavedPatientMedDataSuccessFully() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        given(patientMedDataServiceImpl.selectPatientMedicalDataById(PatientMedicalDatas.patientMedicalDataNull.getId()))
-                .willReturn(Optional.empty());
-        given(patientMedDataRepository.save(PatientMedicalDatas.patientMedicalDataNull)).willAnswer(invocation -> invocation.getArgument(0));
-        PatientMedicalData savedMedFac = patientMedDataRepository.save(PatientMedicalDatas.patientMedicalDataNull);
-        assertThat(savedMedFac).isNotNull();
+        given(patientMedDataRepository.findById(PatientMedicalDatas.patientMedicalDataNull.getId())).willReturn(Optional.of(PatientMedicalDatas.patientMedicalDataNull));
+        given(patientMedDataRepository.save(PatientMedicalDatas.patientMedicalDataNull)).willReturn(PatientMedicalDatas.patientMedicalDataNull);
+        assertThat(patientMedDataRepository.save(PatientMedicalDatas.patientMedicalDataNull)).isNotNull();
         verify(patientMedDataRepository).save(any(PatientMedicalData.class));
     }
 
@@ -47,23 +45,22 @@ public class PatientMedDataCrudTests {
     void shouldThrowExceptionWhenSavePatientMedDataWithExistingID() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         given(patientMedDataRepository.findById(PatientMedicalDatas.patientMedicalData1.getId())).willReturn(Optional.of(PatientMedicalDatas.patientMedicalData1));
-        assertThrows(CreateObjException.class,() -> patientMedDataServiceImpl.create(PatientMedicalDatas.patientMedicalData1));
+        assertThrows(ResourceNotFoundException.class,() -> patientMedDataServiceImpl.create(PatientMedicalDatas.patientMedicalData1));
         verify(patientMedDataRepository, never()).save(any(PatientMedicalData.class));
     }
 
     @Test
-    void shouldUpdatePatientMedData() {
+    void shouldThrowExceptionWhileUpdatePatientMedData() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         given(patientMedDataRepository.save(PatientMedicalDatas.patientMedicalData1)).willReturn(PatientMedicalDatas.patientMedicalData1);
-        final PatientMedicalData expected = patientMedDataServiceImpl.update(PatientMedicalDatas.patientMedicalData1);
-        assertThat(expected).isNotNull();
-        verify(patientMedDataRepository).save(any(PatientMedicalData.class));
+        assertThrows(ResourceNotFoundException.class, () -> patientMedDataServiceImpl.update(PatientMedicalDatas.patientMedicalData1));
+        verify(patientMedDataRepository, never()).save(any(PatientMedicalData.class));
     }
 
     @Test
     void shouldReturnSelectAll() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        List<PatientMedicalData> patientMedicalDatas = new ArrayList();
+        List<PatientMedicalData> patientMedicalDatas = new ArrayList<>();
         patientMedicalDatas.add(PatientMedicalDatas.patientMedicalData1);
         patientMedicalDatas.add(PatientMedicalDatas.patientMedicalData2);
         patientMedicalDatas.add(PatientMedicalDatas.patientMedicalData3);
@@ -73,7 +70,7 @@ public class PatientMedDataCrudTests {
     }
 
     @Test
-    void shouldFindPatientMedDataById(){
+    void shouldFindPatientMedDataById() throws ResourceNotFoundException {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
         given(patientMedDataRepository.findById(id)).willReturn(Optional.of(PatientMedicalDatas.patientMedicalData1));
@@ -84,7 +81,7 @@ public class PatientMedDataCrudTests {
     @Test
     void shouldThrowExceptionWhenDeleteWithNonexistentID() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        assertThrows(DeleteObjException.class, () -> patientMedDataServiceImpl.deleteById(PatientMedicalDatas.patientMedicalData1.getId()));
+        assertThrows(ResourceNotFoundException.class, () -> patientMedDataServiceImpl.deleteById(PatientMedicalDatas.patientMedicalData1.getId()));
         verify(patientMedDataRepository, never()).deleteById(PatientMedicalDatas.patientMedicalData1.getId());
     }
 }

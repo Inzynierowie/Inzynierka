@@ -1,5 +1,6 @@
 package com.engineering.thesis.backend.controller;
 
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Appointment;
 import com.engineering.thesis.backend.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +16,17 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping("/create")
-    public void create(@RequestBody Appointment appointment) {
-        appointmentService.create(appointment);
+    public Appointment create(@RequestBody Appointment appointment) throws ResourceNotFoundException {
+        return appointmentService.create(appointment);
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody Appointment appointment) {
-        appointmentService.update(appointment);
+    public Appointment update(@RequestBody Appointment appointment) throws ResourceNotFoundException {
+        return appointmentService.update(appointment);
     }
 
     @GetMapping("/select/{id}")
-    public Optional<Appointment> selectAppointmentById(@PathVariable Long id) {
+    public Optional<Appointment> selectAppointmentById(@PathVariable Long id) throws ResourceNotFoundException {
         return appointmentService.selectAppointmentById(id);
     }
 
@@ -35,8 +36,5 @@ public class AppointmentController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Long deleteById(@PathVariable Long id) {
-        appointmentService.deleteById(id);
-        return id;
-    }
+    public Long deleteById(@PathVariable Long id) throws ResourceNotFoundException { return appointmentService.deleteById(id); }
 }

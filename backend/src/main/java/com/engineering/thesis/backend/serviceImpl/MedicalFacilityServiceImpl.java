@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.serviceImpl;
 
-import com.engineering.thesis.backend.exception.CreateObjException;
-import com.engineering.thesis.backend.exception.DeleteObjException;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.repository.MedicalFacilityRepository;
 import com.engineering.thesis.backend.service.MedicalFacilityService;
@@ -17,24 +16,28 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService {
     private final MedicalFacilityRepository medicalFacilityRepository;
 
     @Override
-    public MedicalFacility create(MedicalFacility medicalFacility) {
-        Optional<MedicalFacility> medFacOptional = medicalFacilityRepository.findById(medicalFacility.getId());
-        if (medFacOptional.isPresent()) {
-            throw new CreateObjException("Medical Facility with Id " + medicalFacility.getId() + " already exists");
+    public MedicalFacility create(MedicalFacility medicalFacility) throws ResourceNotFoundException {
+        Optional<MedicalFacility> medicalFacilityOptional = medicalFacilityRepository.findById(medicalFacility.getId());
+        if (medicalFacilityOptional.isPresent()) {
+            throw new ResourceNotFoundException("Medical Facility with Id " + medicalFacility.getId() + " already exists");
         }
         return medicalFacilityRepository.save(medicalFacility);
     }
 
     @Override
-    public MedicalFacility update(MedicalFacility medicalFacility) {
+    public MedicalFacility update(MedicalFacility medicalFacility) throws ResourceNotFoundException {
+        Optional<MedicalFacility> medicalFacilityOptional = medicalFacilityRepository.findById(medicalFacility.getId());
+        if (medicalFacilityOptional.isEmpty()) {
+            throw new ResourceNotFoundException("MedicalFacility with Id " + medicalFacility.getId() + " doesn't  exists");
+        }
         return medicalFacilityRepository.save(medicalFacility);
     }
 
     @Override
-    public Long deleteById(Long id) {
-        Optional<MedicalFacility> priceOptional = medicalFacilityRepository.findById(id);
-        if (priceOptional.isEmpty()) {
-            throw new DeleteObjException("MedicalFacility with Id " + id + " don't exists");
+    public Long deleteById(Long id) throws ResourceNotFoundException {
+        Optional<MedicalFacility> medicalFacilityOptional = medicalFacilityRepository.findById(id);
+        if (medicalFacilityOptional.isEmpty()) {
+            throw new ResourceNotFoundException("MedicalFacility with Id " + id + " doesn't  exists");
         }
         medicalFacilityRepository.deleteById(id);
         return id;
@@ -46,7 +49,11 @@ public class MedicalFacilityServiceImpl implements MedicalFacilityService {
     }
 
     @Override
-    public Optional<MedicalFacility> selectMedicalFacilityById(Long id) {
+    public Optional<MedicalFacility> selectMedicalFacilityById(Long id) throws ResourceNotFoundException {
+        Optional<MedicalFacility> medicalFacilityOptional = medicalFacilityRepository.findById(id);
+        if (medicalFacilityOptional.isEmpty()) {
+            throw new ResourceNotFoundException("MedicalFacility with Id " + id + " doesn't  exists");
+        }
         return medicalFacilityRepository.findById(id);
     }
 }

@@ -1,5 +1,6 @@
 package com.engineering.thesis.backend.controller;
 
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Patient;
 import com.engineering.thesis.backend.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +15,12 @@ public class PatientController {
     private final PatientService patientService;
 
     @PutMapping("/update")
-    public void update(@RequestBody Patient patient) {
-        patientService.update(patient);
+    public Patient update(@RequestBody Patient patient) throws ResourceNotFoundException {
+        return patientService.update(patient);
     }
 
     @GetMapping("/select/{id}")
-    public Patient selectById(@PathVariable Long id) {
+    public Patient selectById(@PathVariable Long id) throws ResourceNotFoundException {
         return patientService.selectById(id);
     }
 

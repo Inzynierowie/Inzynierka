@@ -2,6 +2,7 @@ package com.engineering.thesis.backend.controllerIntegrationTests;
 
 import com.engineering.thesis.backend.controller.MedicalFacilityController;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.serviceImpl.MedicalFacilityServiceImpl;
 import com.engineering.thesis.backend.testObj.MedicalFacilities;
@@ -64,7 +65,7 @@ public class MedicalFacilityEPTests extends MockConfiguration {
     }
 
     @Test
-    public void selectByIdShouldReturnMedicalFacilitiesWhenProperRoleIsSelected() {
+    public void selectByIdShouldReturnMedicalFacilitiesWhenProperRoleIsSelected() throws ResourceNotFoundException {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
         when(medicalFacilityServiceImpl.selectMedicalFacilityById(id)).thenReturn(java.util.Optional.of(MedicalFacilities.medicalFacility1));

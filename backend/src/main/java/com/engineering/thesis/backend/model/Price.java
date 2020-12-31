@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @Entity
 @Table(name = "priceList", schema = "healthcare")
-@Builder(toBuilder = true)
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Price {

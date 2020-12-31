@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.serviceIntegrationTests;
 
-import com.engineering.thesis.backend.exception.CreateObjException;
-import com.engineering.thesis.backend.exception.DeleteObjException;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Appointment;
 import com.engineering.thesis.backend.repository.AppointmentRepository;
 import com.engineering.thesis.backend.serviceImpl.AppointmentServiceImpl;
@@ -36,11 +35,9 @@ public class AppointmentCrudTests {
     @Test
     void shouldSavedAppointmentSuccessFully() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        given(appointmentServiceImpl.selectAppointmentById(Appointments.appointmentNull.getId()))
-                .willReturn(Optional.empty());
-        given(appointmentRepository.save(Appointments.appointmentNull)).willAnswer(invocation -> invocation.getArgument(0));
-        Appointment savedMedFac = appointmentRepository.save(Appointments.appointmentNull);
-        assertThat(savedMedFac).isNotNull();
+        given(appointmentRepository.findById(Appointments.appointmentNull.getId())).willReturn(Optional.of(Appointments.appointmentNull));
+        given(appointmentRepository.save(Appointments.appointmentNull)).willReturn(Appointments.appointmentNull);
+        assertThat(appointmentRepository.save(Appointments.appointmentNull)).isNotNull();
         verify(appointmentRepository).save(any(Appointment.class));
     }
 
@@ -48,23 +45,22 @@ public class AppointmentCrudTests {
     void shouldThrowExceptionWhenSaveAppointmentWithExistingID() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         given(appointmentRepository.findById(Appointments.appointment1.getId())).willReturn(Optional.of(Appointments.appointment1));
-        assertThrows(CreateObjException.class, () -> appointmentServiceImpl.create(Appointments.appointment1));
+        assertThrows(ResourceNotFoundException.class, () -> appointmentServiceImpl.create(Appointments.appointment1));
         verify(appointmentRepository, never()).save(any(Appointment.class));
     }
 
     @Test
-    void shouldUpdateAppointment() {
+    void shouldThrowExceptionWhileUpdateAppointment() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         given(appointmentRepository.save(Appointments.appointment1)).willReturn(Appointments.appointment1);
-        final Appointment expected = appointmentServiceImpl.update(Appointments.appointment1);
-        assertThat(expected).isNotNull();
-        verify(appointmentRepository).save(any(Appointment.class));
+        assertThrows(ResourceNotFoundException.class, () -> appointmentServiceImpl.update(Appointments.appointment1));
+        verify(appointmentRepository, never()).save(any(Appointment.class));
     }
 
     @Test
     void shouldReturnSelectAll() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        List<Appointment> appointments = new ArrayList();
+        List<Appointment> appointments = new ArrayList<>();
         appointments.add(Appointments.appointment1);
         appointments.add(Appointments.appointment2);
         appointments.add(Appointments.appointment3);
@@ -74,7 +70,7 @@ public class AppointmentCrudTests {
     }
 
     @Test
-    void shouldFindAppointmentById() {
+    void shouldFindAppointmentById() throws ResourceNotFoundException {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
         given(appointmentRepository.findById(id)).willReturn(Optional.of(Appointments.appointment1));
@@ -85,7 +81,7 @@ public class AppointmentCrudTests {
     @Test
     void shouldThrowExceptionWhenDeleteWithNonexistentID() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        assertThrows(DeleteObjException.class, () -> appointmentServiceImpl.deleteById(Appointments.appointment1.getId()));
+        assertThrows(ResourceNotFoundException.class, () -> appointmentServiceImpl.deleteById(Appointments.appointment1.getId()));
         verify(appointmentRepository, never()).deleteById(Appointments.appointment1.getId());
     }
 }

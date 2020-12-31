@@ -2,6 +2,7 @@ package com.engineering.thesis.backend.controllerIntegrationTests;
 
 import com.engineering.thesis.backend.controller.PriceController;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Price;
 import com.engineering.thesis.backend.serviceImpl.PriceServiceImpl;
 import com.engineering.thesis.backend.testObj.Prices;
@@ -64,7 +65,7 @@ class PriceEPTests extends MockConfiguration {
     }
 
     @Test
-    public void selectByIdShouldReturnPriceWhenProperRoleIsSelected() {
+    public void selectByIdShouldReturnPriceWhenProperRoleIsSelected() throws ResourceNotFoundException {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
         when(priceServiceImpl.selectPriceById(id)).thenReturn(java.util.Optional.of(Prices.price1));

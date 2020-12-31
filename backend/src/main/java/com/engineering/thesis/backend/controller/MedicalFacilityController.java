@@ -1,5 +1,6 @@
 package com.engineering.thesis.backend.controller;
 
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.MedicalFacility;
 import com.engineering.thesis.backend.service.MedicalFacilityService;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +16,17 @@ public class MedicalFacilityController {
     private final MedicalFacilityService medicalFacilityService;
 
     @PostMapping("/create")
-    public void create(@RequestBody MedicalFacility medicalFacility) {
-        medicalFacilityService.create(medicalFacility);
+    public MedicalFacility create(@RequestBody MedicalFacility medicalFacility) throws ResourceNotFoundException {
+        return medicalFacilityService.create(medicalFacility);
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody MedicalFacility medicalFacility) {
-        medicalFacilityService.update(medicalFacility);
+    public MedicalFacility update(@RequestBody MedicalFacility medicalFacility) throws ResourceNotFoundException {
+        return medicalFacilityService.update(medicalFacility);
     }
 
     @GetMapping("/select/{id}")
-    public Optional<MedicalFacility> selectMedicalFacilityById(@PathVariable Long id) {
+    public Optional<MedicalFacility> selectMedicalFacilityById(@PathVariable Long id) throws ResourceNotFoundException {
         return medicalFacilityService.selectMedicalFacilityById(id);
     }
 
@@ -35,8 +36,5 @@ public class MedicalFacilityController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Long deleteById(@PathVariable Long id) {
-        medicalFacilityService.deleteById(id);
-        return id;
-    }
+    public Long deleteById(@PathVariable Long id) throws ResourceNotFoundException { return medicalFacilityService.deleteById(id); }
 }

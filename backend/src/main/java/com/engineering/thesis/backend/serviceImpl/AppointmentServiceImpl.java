@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.serviceImpl;
 
-import com.engineering.thesis.backend.exception.CreateObjException;
-import com.engineering.thesis.backend.exception.DeleteObjException;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Appointment;
 import com.engineering.thesis.backend.repository.AppointmentRepository;
 import com.engineering.thesis.backend.service.AppointmentService;
@@ -17,24 +16,28 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
 
     @Override
-    public Appointment create(Appointment appointment) {
+    public Appointment create(Appointment appointment) throws ResourceNotFoundException {
         Optional<Appointment> appointmentOptional = appointmentRepository.findById(appointment.getId());
         if (appointmentOptional.isPresent()) {
-            throw new CreateObjException("Appointment with Id " + appointment.getId() + " already exists");
+            throw new ResourceNotFoundException("Appointment with Id " + appointment.getId() + " already exists");
         }
         return appointmentRepository.save(appointment);
     }
 
     @Override
-    public Appointment update(Appointment appointment) {
+    public Appointment update(Appointment appointment) throws ResourceNotFoundException {
+        Optional<Appointment> priceOptional = appointmentRepository.findById(appointment.getId());
+        if (priceOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Appointment with Id " + appointment.getId() + " doesn't  exists");
+        }
         return appointmentRepository.save(appointment);
     }
 
     @Override
-    public Long deleteById(Long id) {
+    public Long deleteById(Long id) throws ResourceNotFoundException {
         Optional<Appointment> priceOptional = appointmentRepository.findById(id);
         if (priceOptional.isEmpty()) {
-            throw new DeleteObjException("Appointment with Id " + id + " don't exists");
+            throw new ResourceNotFoundException("Appointment with Id " + id + " doesn't  exists");
         }
         appointmentRepository.deleteById(id);
         return id;
@@ -46,7 +49,11 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Optional<Appointment> selectAppointmentById(Long id) {
+    public Optional<Appointment> selectAppointmentById(Long id) throws ResourceNotFoundException {
+        Optional<Appointment> priceOptional = appointmentRepository.findById(id);
+        if (priceOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Appointment with Id " + id + " doesn't  exists");
+        }
         return appointmentRepository.findById(id);
     }
 }

@@ -1,6 +1,6 @@
 package com.engineering.thesis.backend.serviceIntegrationTests;
 
-import com.engineering.thesis.backend.exception.CreateObjException;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Doctor;
 import com.engineering.thesis.backend.repository.DoctorRepository;
 import com.engineering.thesis.backend.serviceImpl.DoctorServiceImpl;
@@ -35,11 +35,8 @@ public class DoctorCruTests {
     @Test
     void shouldSavedDoctorSuccessFully() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        given(doctorServiceImpl.selectByUserId(Doctors.doctorNull.getId()))
-                .willReturn(Optional.empty());
-        given(doctorRepository.save(Doctors.doctorNull)).willAnswer(invocation -> invocation.getArgument(0));
-        Doctor savedUser = doctorRepository.save(Doctors.doctorNull);
-        assertThat(savedUser).isNotNull();
+        given(doctorRepository.save(Doctors.doctorNull)).willReturn(Doctors.doctorNull);
+        assertThat(doctorRepository.save(Doctors.doctorNull)).isNotNull();
         verify(doctorRepository).save(any(Doctor.class));
     }
 
@@ -47,23 +44,22 @@ public class DoctorCruTests {
     void shouldThrowExceptionWhenSaveDoctorWithExistingID() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         given(doctorRepository.findById(Doctors.doctor1.getId())).willReturn(Optional.of(Doctors.doctor1));
-        assertThrows(CreateObjException.class,() -> doctorServiceImpl.create(Doctors.doctor1));
+        assertThrows(ResourceNotFoundException.class,() -> doctorServiceImpl.create(Doctors.doctor1));
         verify(doctorRepository, never()).save(any(Doctor.class));
     }
 
     @Test
-    void shouldUpdateDoctor() {
+    void shouldThrowExceptionWhileUpdateDoctor() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         given(doctorRepository.save(Doctors.doctor1)).willReturn(Doctors.doctor1);
-        final Doctor expected = doctorServiceImpl.update(Doctors.doctor1);
-        assertThat(expected).isNotNull();
-        verify(doctorRepository).save(any(Doctor.class));
+        assertThrows(ResourceNotFoundException.class, () -> doctorServiceImpl.update(Doctors.doctor1));
+        verify(doctorRepository, never()).save(any(Doctor.class));
     }
 
     @Test
     void shouldReturnSelectAll() {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
-        List<Doctor> doctors = new ArrayList();
+        List<Doctor> doctors = new ArrayList<>();
         doctors.add(Doctors.doctor1);
         doctors.add(Doctors.doctor2);
         doctors.add(Doctors.doctor3);
@@ -73,11 +69,11 @@ public class DoctorCruTests {
     }
 
     @Test
-    void shouldFindDoctorById(){
+    void shouldFindDoctorById() throws ResourceNotFoundException {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
         given(doctorRepository.findById(id)).willReturn(Optional.of(Doctors.doctor1));
-        final Optional<Doctor> expected  = doctorServiceImpl.selectByUserId(id);
+        final Doctor expected = doctorServiceImpl.selectById(id);
         assertThat(expected).isNotNull();
     }
 }

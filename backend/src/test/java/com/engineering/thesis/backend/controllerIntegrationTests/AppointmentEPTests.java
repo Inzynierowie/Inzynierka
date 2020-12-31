@@ -2,6 +2,7 @@ package com.engineering.thesis.backend.controllerIntegrationTests;
 
 import com.engineering.thesis.backend.controller.AppointmentController;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Appointment;
 import com.engineering.thesis.backend.serviceImpl.AppointmentServiceImpl;
 import com.engineering.thesis.backend.testObj.Appointments;
@@ -62,7 +63,7 @@ class AppointmentEPTests extends MockConfiguration {
     }
 
     @Test
-    public void selectByIdShouldReturnAppointmentWhenProperRoleIsSelected() {
+    public void selectByIdShouldReturnAppointmentWhenProperRoleIsSelected() throws ResourceNotFoundException {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
         when(appointmentServiceImpl.selectAppointmentById(id)).thenReturn(java.util.Optional.of(Appointments.appointment1));

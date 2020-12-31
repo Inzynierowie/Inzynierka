@@ -2,6 +2,7 @@ package com.engineering.thesis.backend.controllerIntegrationTests;
 
 import com.engineering.thesis.backend.controller.PatientMedicalDataController;
 import com.engineering.thesis.backend.controllerIntegrationTests.configration.MockConfiguration;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.serviceImpl.PatientMedicalDataServiceImpl;
 import com.engineering.thesis.backend.testObj.PatientMedicalDatas;
@@ -61,7 +62,7 @@ public class PatientMedDataEPTests extends MockConfiguration {
     }
 
     @Test
-    public void selectByIdShouldReturnPatientMedDataWhenProperRoleIsSelected() {
+    public void selectByIdShouldReturnPatientMedDataWhenProperRoleIsSelected() throws ResourceNotFoundException {
         System.out.println("Running test -> " + Thread.currentThread().getStackTrace()[1].getMethodName());
         final Long id = 1L;
         when(patientMedicalDataServiceImpl.selectPatientMedicalDataById(id)).thenReturn(java.util.Optional.of(PatientMedicalDatas.patientMedicalData1));

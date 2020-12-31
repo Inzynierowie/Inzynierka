@@ -1,7 +1,6 @@
 package com.engineering.thesis.backend.serviceImpl;
 
-import com.engineering.thesis.backend.exception.CreateObjException;
-import com.engineering.thesis.backend.exception.DeleteObjException;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.repository.PatientMedicalDataRepository;
 import com.engineering.thesis.backend.service.PatientMedicalDataService;
@@ -17,24 +16,28 @@ public class PatientMedicalDataServiceImpl implements PatientMedicalDataService 
     private final PatientMedicalDataRepository patientMedicalDataRepository;
 
     @Override
-    public PatientMedicalData create(PatientMedicalData patientMedicalData) {
-        Optional<PatientMedicalData> medFacOptional = patientMedicalDataRepository.findById(patientMedicalData.getId());
-        if (medFacOptional.isPresent()) {
-            throw new CreateObjException("PatientMedicalData with Id " + patientMedicalData.getId() + " already exists");
+    public PatientMedicalData create(PatientMedicalData patientMedicalData) throws ResourceNotFoundException {
+        Optional<PatientMedicalData> patientMedicalDataOptional = patientMedicalDataRepository.findById(patientMedicalData.getId());
+        if (patientMedicalDataOptional.isPresent()) {
+            throw new ResourceNotFoundException("PatientMedicalData with Id " + patientMedicalData.getId() + " already exists");
         }
         return patientMedicalDataRepository.save(patientMedicalData);
     }
 
     @Override
-    public PatientMedicalData update(PatientMedicalData patientMedicalData) {
+    public PatientMedicalData update(PatientMedicalData patientMedicalData) throws ResourceNotFoundException {
+        Optional<PatientMedicalData> patientMedicalDataOptional = patientMedicalDataRepository.findById(patientMedicalData.getId());
+        if (patientMedicalDataOptional.isEmpty()) {
+            throw new ResourceNotFoundException("PatientMedicalData with Id " + patientMedicalData.getId() + " doesn't  exists");
+        }
         return patientMedicalDataRepository.save(patientMedicalData);
     }
 
     @Override
-    public Long deleteById(Long id) {
-        Optional<PatientMedicalData> priceOptional = patientMedicalDataRepository.findById(id);
-        if (priceOptional.isEmpty()) {
-            throw new DeleteObjException("PatientMedicalData with Id " + id + " don't exists");
+    public Long deleteById(Long id) throws ResourceNotFoundException {
+        Optional<PatientMedicalData> patientMedicalDataOptional = patientMedicalDataRepository.findById(id);
+        if (patientMedicalDataOptional.isEmpty()) {
+            throw new ResourceNotFoundException("PatientMedicalData with Id " + id + " doesn't  exists");
         }
         patientMedicalDataRepository.deleteById(id);
         return id;
@@ -46,7 +49,11 @@ public class PatientMedicalDataServiceImpl implements PatientMedicalDataService 
     }
 
     @Override
-    public Optional<PatientMedicalData> selectPatientMedicalDataById(Long id) {
+    public Optional<PatientMedicalData> selectPatientMedicalDataById(Long id) throws ResourceNotFoundException {
+        Optional<PatientMedicalData> patientMedicalDataOptional = patientMedicalDataRepository.findById(id);
+        if (patientMedicalDataOptional.isEmpty()) {
+            throw new ResourceNotFoundException("PatientMedicalData with Id " + id + " doesn't  exists");
+        }
         return patientMedicalDataRepository.findById(id);
     }
 }

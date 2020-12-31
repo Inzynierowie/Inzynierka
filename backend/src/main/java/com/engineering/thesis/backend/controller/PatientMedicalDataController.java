@@ -1,5 +1,6 @@
 package com.engineering.thesis.backend.controller;
 
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.PatientMedicalData;
 import com.engineering.thesis.backend.service.PatientMedicalDataService;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +16,17 @@ public class PatientMedicalDataController {
     private final PatientMedicalDataService patientMedicalDataService;
 
     @PostMapping("/create")
-    public void create(@RequestBody PatientMedicalData patientMedicalData) {
-        patientMedicalDataService.create(patientMedicalData);
+    public PatientMedicalData create(@RequestBody PatientMedicalData patientMedicalData) throws ResourceNotFoundException {
+        return patientMedicalDataService.create(patientMedicalData);
     }
 
     @PutMapping("/update")
-    public void update(@RequestBody PatientMedicalData patientMedicalData) {
-        patientMedicalDataService.update(patientMedicalData);
+    public PatientMedicalData update(@RequestBody PatientMedicalData patientMedicalData) throws ResourceNotFoundException {
+        return patientMedicalDataService.update(patientMedicalData);
     }
 
     @GetMapping("/select/{id}")
-    public Optional<PatientMedicalData> selectPatientMedicalDataById(@PathVariable Long id) {
+    public Optional<PatientMedicalData> selectPatientMedicalDataById(@PathVariable Long id) throws ResourceNotFoundException {
         return patientMedicalDataService.selectPatientMedicalDataById(id);
     }
 
@@ -35,8 +36,5 @@ public class PatientMedicalDataController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public Long deleteById(@PathVariable Long id) {
-        patientMedicalDataService.deleteById(id);
-        return id;
-    }
+    public Long deleteById(@PathVariable Long id) throws ResourceNotFoundException { return patientMedicalDataService.deleteById(id); }
 }
