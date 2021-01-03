@@ -1,12 +1,10 @@
 package com.engineering.thesis.backend.controller;
 
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Doctor;
 import com.engineering.thesis.backend.service.DoctorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,8 +14,13 @@ import java.util.List;
 public class DoctorController {
     private final DoctorService doctorService;
 
+    @PutMapping("/update")
+    public Doctor update(@RequestBody Doctor doctor) throws ResourceNotFoundException {
+        return doctorService.update(doctor);
+    }
+
     @GetMapping("/select/{id}")
-    public Doctor selectById(@PathVariable Long id) {
+    public Doctor selectById(@PathVariable Long id) throws ResourceNotFoundException {
         return doctorService.selectById(id);
     }
 

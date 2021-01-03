@@ -5,7 +5,6 @@ import com.engineering.thesis.backend.model.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
     ResponseEntity<User> findById(Long id) throws ResourceNotFoundException;

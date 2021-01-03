@@ -1,15 +1,21 @@
 package com.engineering.thesis.backend.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
-@Entity(name = "medicalFacility")
+@Entity
+@Table(name = "medicalFacility", schema = "healthcare")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class MedicalFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,6 +2,7 @@ package com.engineering.thesis.backend.serviceImpl;
 
 import com.engineering.thesis.backend.config.jwt.JwtToken;
 import com.engineering.thesis.backend.enums.UserRole;
+import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.Doctor;
 import com.engineering.thesis.backend.model.Patient;
 import com.engineering.thesis.backend.model.User;
@@ -36,12 +37,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Transactional
     @Override
-    public ResponseEntity<?> register(RegisterRequest signUpRequest) {
+    public ResponseEntity<?> register(RegisterRequest signUpRequest) throws ResourceNotFoundException {
         User user = new User();
-        if (userRepository.existsByEmailAndIsActive(signUpRequest.getEmail(),true)) {
-                return ResponseEntity
-                        .badRequest()
-                        .body("Error: Email is already in use!");
+        if (userRepository.existsByEmailAndIsActive(signUpRequest.getEmail(), true)) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Email is already in use!");
         }
 
         if (signUpRequest.getRole().isBlank()) {
@@ -67,7 +68,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         userRepository.save(user);
     }
 
-    private void saveRelated(User user) {
+    private void saveRelated(User user) throws ResourceNotFoundException {
         if (user.getRole().equals(DOCTOR.name())) {
             Doctor doctor = new Doctor();
             doctor.setUser(user);

@@ -3,8 +3,6 @@ package com.engineering.thesis.backend.serviceImpl.user;
 import com.engineering.thesis.backend.exception.ResourceNotFoundException;
 import com.engineering.thesis.backend.model.User;
 import com.engineering.thesis.backend.repository.UserRepository;
-import com.engineering.thesis.backend.service.DoctorService;
-import com.engineering.thesis.backend.service.PatientService;
 import com.engineering.thesis.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +18,6 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PatientService patientService;
-    private final DoctorService doctorService;
 
     @Override
     public ResponseEntity<User> findById(Long id) throws ResourceNotFoundException {
