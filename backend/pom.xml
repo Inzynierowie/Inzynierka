@@ -19,7 +19,6 @@
         <hibernate-validator>6.1.6.Final</hibernate-validator>
         <spring-boot-starter-security>2.3.4.RELEASE</spring-boot-starter-security>
         <jjwt>0.9.1</jjwt>
-        <problem-spring-web-starter>0.25.0</problem-spring-web-starter>
     </properties>
 
     <dependencies>
@@ -98,12 +97,6 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.zalando</groupId>
-            <artifactId>problem-spring-web-starter</artifactId>
-            <version>${problem-spring-web-starter}</version>
-            <type>pom</type>
-        </dependency>
     </dependencies>
 
     <build>
