@@ -15,7 +15,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <hibernate-core>5.4.18.Final</hibernate-core>
+        <hibernate-core>5.4.24.Final</hibernate-core>
         <hibernate-validator>6.1.6.Final</hibernate-validator>
         <spring-boot-starter-security>2.3.4.RELEASE</spring-boot-starter-security>
         <jjwt>0.9.1</jjwt>
